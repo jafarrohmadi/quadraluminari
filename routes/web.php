@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::redirect('/', '/login');
 Route::get('/home', function () {
     if (session('status')) {
@@ -17,15 +20,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::resource('permissions', 'PermissionsController');
 
-    // Roles
-    Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
-    Route::resource('roles', 'RolesController');
-
     // Users
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
     Route::resource('users', 'UsersController');
 
-    // Pemeriksaans
-    Route::delete('pemeriksaans/destroy', 'PemeriksaanController@massDestroy')->name('pemeriksaans.massDestroy');
-    Route::resource('pemeriksaans', 'PemeriksaanController');
+    Route::delete('active-client/destroy', 'ActiveClientController@massDestroy')->name('active-client.massDestroy');
+    Route::resource('active-client', 'ActiveClientController');
+
+    Route::get('getCityByProvinceId/{id}', 'CityController@getCityByProvinceId');
 });

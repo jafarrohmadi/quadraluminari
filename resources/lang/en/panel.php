@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'klinik',
+    'site_title' => 'quadraluminari',
 ];

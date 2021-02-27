@@ -1,6 +1,6 @@
 <?php
 
-use App\Permission;
+use App\Models\Permission;
 use Illuminate\Database\Seeder;
 
 class PermissionsTableSeeder extends Seeder
@@ -10,88 +10,70 @@ class PermissionsTableSeeder extends Seeder
         $permissions = [
             [
                 'id'    => '1',
-                'title' => 'user_management_access',
+                'title' => 'active_client_view',
+                'name' => 'Active Client View'
             ],
             [
                 'id'    => '2',
-                'title' => 'permission_create',
+                'title' => 'active_client_create',
+                'name' => 'Active Client Create'
             ],
             [
                 'id'    => '3',
-                'title' => 'permission_edit',
+                'title' => 'active_client_edit',
+                'name' => 'Active Client Edit'
             ],
             [
                 'id'    => '4',
-                'title' => 'permission_show',
+                'title' => 'active_client_delete',
+                'name' => 'Active Client Delete'
             ],
             [
                 'id'    => '5',
-                'title' => 'permission_delete',
+                'title' =>'active_opportunity_view',
+                'name' => 'Active Opportunity View',
             ],
             [
                 'id'    => '6',
-                'title' => 'permission_access',
+                'title' =>'active_opportunity_create',
+                'name' => 'Active Opportunity Create',
             ],
             [
                 'id'    => '7',
-                'title' => 'role_create',
+                'title' =>'active_opportunity_edit',
+                'name' => 'Active Opportunity Edit',
             ],
             [
                 'id'    => '8',
-                'title' => 'role_edit',
+                'title' =>'active_opportunity_delete',
+                'name' => 'Active Opportunity Delete',
             ],
             [
                 'id'    => '9',
-                'title' => 'role_show',
+                'title' =>'dashboard',
+                'name' => 'Dashboard',
             ],
             [
                 'id'    => '10',
-                'title' => 'role_delete',
+                'title' => 'user_management_view',
+                'name' => 'User Management View',
             ],
             [
                 'id'    => '11',
-                'title' => 'role_access',
+                'title' => 'user_management_create',
+                'name' => 'User Management View',
             ],
             [
                 'id'    => '12',
-                'title' => 'user_create',
+                'title' => 'user_management_edit',
+                'name' => 'User Management Edit',
             ],
             [
                 'id'    => '13',
-                'title' => 'user_edit',
+                'title' => 'user_management_delete',
+                'name' => 'User Management Delete',
             ],
-            [
-                'id'    => '14',
-                'title' => 'user_show',
-            ],
-            [
-                'id'    => '15',
-                'title' => 'user_delete',
-            ],
-            [
-                'id'    => '16',
-                'title' => 'user_access',
-            ],
-            [
-                'id'    => '17',
-                'title' => 'pemeriksaan_create',
-            ],
-            [
-                'id'    => '18',
-                'title' => 'pemeriksaan_edit',
-            ],
-            [
-                'id'    => '19',
-                'title' => 'pemeriksaan_show',
-            ],
-            [
-                'id'    => '20',
-                'title' => 'pemeriksaan_delete',
-            ],
-            [
-                'id'    => '21',
-                'title' => 'pemeriksaan_access',
-            ],
+
         ];
 
         Permission::insert($permissions);
