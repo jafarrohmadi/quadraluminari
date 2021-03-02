@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 @section('content')
-    <h3>{{ trans('global.update') }} Active Opportunity</h3>
+    <h3>{{ trans('global.update') }} Active Opportunity Reminder</h3>
     <br>
-    <form method="POST" action="{{ route("admin.active-opportunity.update", [$activeOpportunity->id]) }}"
+    <form method="POST" action="{{ route("admin.active-opportunity-reminder.update", [$activeOpportunity->id]) }}"
           enctype="multipart/form-data">
         @method('PUT')
         @csrf

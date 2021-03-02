@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="175b8c10-5239-48ca-9b9a-434e2d3de073" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityReminderController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity-reminder/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity-reminder/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity-reminder/show.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity/show.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/AuthGates.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/AuthGates.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/active-opportunity/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +188,7 @@
       <workItem from="1614597396653" duration="10097000" />
       <workItem from="1614650596651" duration="6396000" />
       <workItem from="1614659485397" duration="4221000" />
-      <workItem from="1614680398589" duration="2952000" />
+      <workItem from="1614680398589" duration="10601000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <created>1614444390250</created>
@@ -198,7 +204,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614697858046</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Fix gates">
+      <created>1614699390663</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1614699390663</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -207,7 +220,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First Commit" />
     <MESSAGE value="First Some Data" />
-    <option name="LAST_COMMIT_MESSAGE" value="First Some Data" />
+    <MESSAGE value="Fix gates" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix gates" />
   </component>
   <component name="WindowStateProjectService">
     <state x="461" y="168" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1614348858641">
@@ -227,11 +241,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="434" y="210" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1366.728@0.0.1366.728" timestamp="1614441639634" />
-    <state x="113" y="0" key="CommitChangelistDialog2" timestamp="1614697852778">
+    <state x="113" y="0" key="CommitChangelistDialog2" timestamp="1614699388203">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="113" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.728@0.0.1366.728" timestamp="1614653822633" />
-    <state x="113" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1614697852778" />
+    <state x="113" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1614699388203" />
     <state x="467" y="121" key="FileChooserDialogImpl" timestamp="1614650900059">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -253,19 +267,19 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1614361755326" />
-    <state x="521" y="289" key="NewPhpFileDialog" timestamp="1614667378918">
+    <state x="521" y="291" width="323" height="147" key="NewPhpFileDialog" timestamp="1614706306469">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="521" y="289" key="NewPhpFileDialog/0.0.1366.728/1366.0.1366.728@0.0.1366.728" timestamp="1614667378918" />
-    <state x="521" y="289" key="NewPhpFileDialog/0.0.1366.728@0.0.1366.728" timestamp="1614617869041" />
+    <state x="521" y="291" width="323" height="147" key="NewPhpFileDialog/0.0.1366.728@0.0.1366.728" timestamp="1614706306469" />
     <state x="188" y="11" key="SettingsEditor" timestamp="1614555489367">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="188" y="11" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1614555489367" />
-    <state x="279" y="99" key="Vcs.Push.Dialog.v2" timestamp="1614698056947">
+    <state x="279" y="99" key="Vcs.Push.Dialog.v2" timestamp="1614699410806">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="279" y="99" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1614698056947" />
+    <state x="279" y="99" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1614699410806" />
     <state x="390" y="97" width="585" height="534" key="find.popup" timestamp="1614361553928">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -274,10 +288,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="343" y="164" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1614608560400" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1614666489045">
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1614702577768">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728/1366.0.1366.728@0.0.1366.728" timestamp="1614666489045" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1614616936845" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1614702577768" />
   </component>
 </project>

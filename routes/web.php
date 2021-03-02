@@ -30,8 +30,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('active-opportunity/destroy', 'ActiveOpportunityController@massDestroy')->name('active-opportunity.massDestroy');
     Route::resource('active-opportunity', 'ActiveOpportunityController');
 
-    Route::delete('active-opportunity-reminder/destroy', 'ActiveOpportunityReminderController@massDestroy')->name('active-opportunity-reminder.massDestroy');
-    Route::resource('active-opportunity-reminder', 'ActiveOpportunityReminderController');
+     Route::resource('active-opportunity-reminder', 'ActiveOpportunityReminderController');
 
     Route::get('get-active-client','GetActiveClientController@index')->name('get-active-client.index');
 

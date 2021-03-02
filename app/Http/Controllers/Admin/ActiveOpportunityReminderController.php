@@ -25,7 +25,7 @@ use Gate;
  * Class ActiveOpportunityController
  * @package App\Http\Controllers\Admin
  */
-class ActiveOpportunityController extends Controller
+class ActiveOpportunityReminderController extends Controller
 {
     /**
      * @var ActiveOpportunityRepository
@@ -62,11 +62,11 @@ class ActiveOpportunityController extends Controller
 
         if ($request->ajax()) {
             if (me()->id == 1) {
-                $query = $this->activeOpportunityRepository->allQuery([], ['activeClientData', 'userData']);
+                $query = $this->activeOpportunityRepository->allQuery(['reminder' => 1], ['activeClientData', 'userData', 'activeOpportunityHistoryReminderData']);
             }
             else {
-                $query = $this->activeOpportunityRepository->allQuery(['user_id' => me()->id],
-                    ['activeClientData', 'userData']);
+                $query = $this->activeOpportunityRepository->allQuery(['user_id' => me()->id, 'reminder' => 1],
+                    ['activeClientData', 'userData', 'activeOpportunityHistoryReminderData']);
             }
 
             $table = Datatables::of($query);
@@ -91,11 +91,21 @@ class ActiveOpportunityController extends Controller
                        number_format($row->value, 2, ',', '.');
             });
 
+            $table->editColumn('act_history_date_reminder', function ($row)
+            {
+                return $row->activeOpportunityHistoryReminderData->last()->act_history_date_reminder ?? '';
+            });
+
+            $table->editColumn('act_history_order_reminder', function ($row)
+            {
+                return $row->activeOpportunityHistoryReminderData->last()->act_history_order_reminder ?? '';
+            });
+
             $table->editColumn('actions', function ($row) {
                 $viewGate      = 'active_opportunity_view';
                 $editGate      = 'active_opportunity_edit';
-                $deleteGate    = 'active_opportunity_delete';
-                $crudRoutePart = 'active-opportunity';
+                $deleteGate    = 'active_opportunity_delete_delete';
+                $crudRoutePart = 'active-opportunity-reminder';
                 return view('partials.datatablesActions', compact(
                         'viewGate',
                         'editGate',
@@ -110,43 +120,7 @@ class ActiveOpportunityController extends Controller
             return $table->make(true);
         }
 
-        return view('admin.active-opportunity.index');
-    }
-
-    /**
-     * @return Application|Factory|View
-     */
-    public function create()
-    {
-        abort_if(Gate::denies('active_opportunity_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $user = $this->user->findAllData([['id', '!=', 1]]);
-        return view('admin.active-opportunity.create', compact('user'));
-    }
-
-    /**
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    public function store(Request $request)
-    {
-        DB::beginTransaction();
-        try {
-            $input       = $request->all();
-            $opportunity = $this->activeOpportunityRepository->createData($input);
-
-            $input['active_opportunity_id'] = $opportunity->id;
-            $this->activeOpportunityHistoryRepository->createData($input);
-
-            $this->activeOpportunityReminderRepository->createData($input);
-        } catch (Exception $e) {
-            DB::rollBack();
-        }
-
-        DB::commit();
-
-        return redirect()->route('admin.active-opportunity.index');
-
+        return view('admin.active-opportunity-reminder.index');
     }
 
     /**
@@ -161,7 +135,7 @@ class ActiveOpportunityController extends Controller
         $activeOpportunity = $this->activeOpportunityRepository->findData(['id' => $id],
             ['userData', 'activeClientData', 'activeOpportunityHistoryData', 'activeOpportunityHistoryReminderData']);
 
-        return view('admin.active-opportunity.show', compact('user', 'activeOpportunity'));
+        return view('admin.active-opportunity-reminder.show', compact('user', 'activeOpportunity'));
     }
 
     /**
@@ -176,7 +150,7 @@ class ActiveOpportunityController extends Controller
         $activeOpportunity = $this->activeOpportunityRepository->findData(['id' => $id],
             ['userData', 'activeClientData', 'activeOpportunityHistoryData', 'activeOpportunityHistoryReminderData']);
 
-        return view('admin.active-opportunity.edit', compact('user', 'activeOpportunity'));
+        return view('admin.active-opportunity-reminder.edit', compact('user', 'activeOpportunity'));
     }
 
     public function update(Request $request, $id)
