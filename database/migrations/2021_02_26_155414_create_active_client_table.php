@@ -35,6 +35,8 @@ class CreateActiveClientTable extends Migration
             $table->text('number_of_students')->nullable();
             $table->text('number_of_lecturers')->nullable();
             $table->integer('status')->default(0);
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

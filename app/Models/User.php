@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Relationship\UserRelationship;
 use Carbon\Carbon;
 use Hash;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -12,7 +13,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use SoftDeletes, Notifiable;
+    use SoftDeletes, Notifiable, UserRelationship;
 
     public $table = 'users';
 
@@ -65,11 +66,4 @@ class User extends Authenticatable
         $this->notify(new ResetPassword($token));
     }
 
-    /**
-     * @return BelongsToMany
-     */
-    public function permission()
-    {
-        return $this->belongsToMany(Permission::class);
-    }
 }

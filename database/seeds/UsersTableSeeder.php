@@ -14,7 +14,7 @@ class UsersTableSeeder extends Seeder
                 'name'           => 'Admin',
                 'username'       => 'admin',
                 'email'          => 'admin@admin.com',
-                'password'       => '$2y$10$w/mSl8C3ALR0RC2eLJjrwe6fSvRJ4sT3JcPcE0yMZuVWZcpU27Gp2',
+                'password'       => Hash::make('secret'),
                 'remember_token' => null,
             ],
         ];

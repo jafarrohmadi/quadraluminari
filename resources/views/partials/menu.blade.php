@@ -20,7 +20,29 @@
                     </a>
                 </li>
             @endcan
-            @can('user_management_view')
+            @can('active_opportunity_view')
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route("admin.active-opportunity.index") }}">
+                        <i class="fa-fw fas fa-tasks nav-icon">
+
+                        </i>
+                        Active Opportunity
+                    </a>
+                </li>
+            @endcan
+
+            @can('active_opportunity_view')
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route("admin.active-opportunity-reminder.index") }}">
+                        <i class="fa-fw fas fa-tasks nav-icon">
+
+                        </i>
+                        Active Opportunity Reminder
+                    </a>
+                </li>
+            @endcan
+
+        @can('user_management_view')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route("admin.users.index") }}">
                         <i class="fa-fw fas fa-users nav-icon">
@@ -31,7 +53,8 @@
                 </li>
             @endcan
             <li class="nav-item">
-                <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
+                <a href="#" class="nav-link"
+                   onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
                     <i class="nav-icon fas fa-fw fa-sign-out-alt">
 
                     </i>

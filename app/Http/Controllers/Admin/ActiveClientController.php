@@ -15,6 +15,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\DataTables;
 
@@ -103,7 +104,15 @@ class  ActiveClientController extends Controller
      */
     public function store(StoreActiveClientRequest $storeActiveClientRequest)
     {
-        $this->activeClient->createData($storeActiveClientRequest->all());
+        DB::beginTransaction();
+
+        try {
+            $this->activeClient->createData($storeActiveClientRequest->all());
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+
+        DB::commit();
 
         return redirect()->route('admin.active-client.index');
     }
@@ -127,11 +136,12 @@ class  ActiveClientController extends Controller
     {
         $activeClient = $this->activeClient->findData(['id' => $id]);
 
-        $province = $this->province->findAllData();
+        $province          = $this->province->findAllData();
         $cityContactPerson = $this->city->findAllData(['province_id' => $activeClient->contact_person_province_id]);
-        $cityAddress = $this->city->findAllData(['province_id' => $activeClient->address_province_id]);
+        $cityAddress       = $this->city->findAllData(['province_id' => $activeClient->address_province_id]);
 
-        return view('admin.active-client.edit', compact('activeClient', 'province', 'cityContactPerson' , 'cityAddress'));
+        return view('admin.active-client.edit',
+            compact('activeClient', 'province', 'cityContactPerson', 'cityAddress'));
     }
 
     /**
@@ -140,7 +150,15 @@ class  ActiveClientController extends Controller
      */
     public function update(UpdateActiveClientRequest $updateActiveClientRequest, $id)
     {
-        $this->activeClient->updateData($updateActiveClientRequest->except('_method', '_token'), ['id' => $id]);
+        DB::beginTransaction();
+
+        try {
+            $this->activeClient->updateData($updateActiveClientRequest->except('_method', '_token'), ['id' => $id]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+
+        DB::commit();
 
         return redirect()->route('admin.active-client.index');
     }
@@ -153,7 +171,15 @@ class  ActiveClientController extends Controller
     {
         abort_if(Gate::denies('user_management_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $this->activeClient->deleteData(['id' => $id]);
+        DB::beginTransaction();
+
+        try {
+            $this->activeClient->deleteData(['id' => $id]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+
+        DB::commit();
 
         return back();
     }
@@ -164,8 +190,15 @@ class  ActiveClientController extends Controller
      */
     public function massDestroy(MassDestroyActiveClientRequest $request)
     {
-        ActiveClient::whereIn('id', request('ids'))->delete();
+        DB::beginTransaction();
 
+        try {
+            ActiveClient::whereIn('id', request('ids'))->delete();
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+
+        DB::commit();
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }
