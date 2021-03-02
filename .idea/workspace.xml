@@ -4,32 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="175b8c10-5239-48ca-9b9a-434e2d3de073" name="Default Changelist" comment="First Commit">
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/GetActiveClientController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/Traits/Attribute/ActiveOpportunityAttribute.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/Traits/Observer/Blameable.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/Traits/Relationship/ActiveOpportunityRelationship.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/Traits/Relationship/UserRelationship.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Repositories/ActiveOpportunityHistoryRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Repositories/ActiveOpportunityReminderRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Repositories/ActiveOpportunityRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity/create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity/edit.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity/index.blade.php" afterDir="false" />
+    <list default="true" id="175b8c10-5239-48ca-9b9a-434e2d3de073" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveClientController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveClientController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/ActiveClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ActiveClient.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_02_26_155414_create_active_client_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_02_26_155414_create_active_client_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_02_27_164444_create_active_oportunity_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/UsersTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/UsersTableSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/active-client/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-client/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/users/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/users/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/AuthGates.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/AuthGates.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/pendaftaran.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,7 +182,7 @@
       <workItem from="1614597396653" duration="10097000" />
       <workItem from="1614650596651" duration="6396000" />
       <workItem from="1614659485397" duration="4221000" />
-      <workItem from="1614680398589" duration="1475000" />
+      <workItem from="1614680398589" duration="2952000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <created>1614444390250</created>
@@ -213,7 +191,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614444390250</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="First Some Data">
+      <created>1614697858046</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1614697858046</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -221,7 +206,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First Commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="First Commit" />
+    <MESSAGE value="First Some Data" />
+    <option name="LAST_COMMIT_MESSAGE" value="First Some Data" />
   </component>
   <component name="WindowStateProjectService">
     <state x="461" y="168" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1614348858641">
@@ -241,11 +227,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="434" y="210" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1366.728@0.0.1366.728" timestamp="1614441639634" />
-    <state x="113" y="0" key="CommitChangelistDialog2" timestamp="1614653822633">
+    <state x="113" y="0" key="CommitChangelistDialog2" timestamp="1614697852778">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="113" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.728@0.0.1366.728" timestamp="1614653822633" />
-    <state x="113" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1614611345306" />
+    <state x="113" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1614697852778" />
     <state x="467" y="121" key="FileChooserDialogImpl" timestamp="1614650900059">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -276,10 +262,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="188" y="11" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1614555489367" />
-    <state x="279" y="99" key="Vcs.Push.Dialog.v2" timestamp="1614444640131">
+    <state x="279" y="99" key="Vcs.Push.Dialog.v2" timestamp="1614698056947">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="279" y="99" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1614444640131" />
+    <state x="279" y="99" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1614698056947" />
     <state x="390" y="97" width="585" height="534" key="find.popup" timestamp="1614361553928">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

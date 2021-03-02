@@ -2,6 +2,7 @@
     <nav class="sidebar-nav">
 
         <ul class="nav">
+            @can('dashboard')
             <li class="nav-item">
                 <a href="{{ route("admin.home") }}" class="nav-link">
                     <i class="nav-icon fas fa-fw fa-tachometer-alt">
@@ -10,6 +11,7 @@
                     {{ trans('global.dashboard') }}
                 </a>
             </li>
+            @endcan
             @can('active_client_view')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route("admin.active-client.index") }}">
@@ -20,6 +22,7 @@
                     </a>
                 </li>
             @endcan
+
             @can('active_opportunity_view')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route("admin.active-opportunity.index") }}">
@@ -29,9 +32,7 @@
                         Active Opportunity
                     </a>
                 </li>
-            @endcan
 
-            @can('active_opportunity_view')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route("admin.active-opportunity-reminder.index") }}">
                         <i class="fa-fw fas fa-tasks nav-icon">
@@ -42,7 +43,7 @@
                 </li>
             @endcan
 
-        @can('user_management_view')
+            @can('user_management_view')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route("admin.users.index") }}">
                         <i class="fa-fw fas fa-users nav-icon">
@@ -52,6 +53,7 @@
                     </a>
                 </li>
             @endcan
+
             <li class="nav-item">
                 <a href="#" class="nav-link"
                    onclick="event.preventDefault(); document.getElementById('logoutform').submit();">

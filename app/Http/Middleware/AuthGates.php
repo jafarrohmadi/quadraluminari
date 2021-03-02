@@ -13,11 +13,11 @@ class AuthGates
         $user = me();
 
         if (!app()->runningInConsole() && $user) {
-            $roles            = Permission::all();
+            $roles            = Permission::get();
             $permissionsArray = $user->permission->pluck('id')->toArray();
 
             foreach ($roles as $permission) {
-                Gate::define($permission->title, function ($permission) use ($permissionsArray) {
+                Gate::define($permission->title, function ($user) use ($permissionsArray , $permission) {
                     return in_array($permission->id, $permissionsArray);
                 });
             }
