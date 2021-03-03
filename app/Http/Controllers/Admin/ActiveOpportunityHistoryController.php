@@ -12,7 +12,9 @@ use Exception;
 use Gate;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\DataTables;
@@ -73,11 +75,11 @@ class ActiveOpportunityHistoryController extends Controller
 
         if (me()->id == 1) {
             $table->editColumn('actions', function ($row) {
-                $viewGate      = 'active_opportunity_view';
+                $viewGate      = 'no_direct';
                 $editGate      = 'active_opportunity_edit';
                 $deleteGate    = 'active_opportunity_delete';
-                $crudRoutePart = 'active-opportunity';
-                return view('partials.datatablesActions', compact(
+                $crudRoutePart = 'active-opportunity-history';
+                return view('partials.datatablesActionsModals', compact(
                         'viewGate',
                         'editGate',
                         'deleteGate',
@@ -90,5 +92,53 @@ class ActiveOpportunityHistoryController extends Controller
         }
 
         return $table->make(true);
+    }
+
+    /**
+     * @param $id
+     * @return Application|Factory|View
+     */
+    public function edit($id)
+    {
+        abort_if(Gate::denies('active_opportunity_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $activeOpportunity = $this->activeOpportunityHistoryRepository->findData(['id' => $id]);
+
+        return view('admin.active-opportunity.edit', compact('activeOpportunity'));
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return Application|Factory|View
+     */
+    public function update(Request $request, $id)
+    {
+        abort_if(Gate::denies('active_opportunity_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $this->activeOpportunityHistoryRepository->updateData($request->except('_token', '_method'), ['id' => $id]);
+
+        return back();
+    }
+
+    /**
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function destroy($id)
+    {
+        abort_if(Gate::denies('active_opportunity_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        DB::beginTransaction();
+
+        try {
+            $this->activeOpportunityHistoryRepository->deleteData(['id' => $id]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+
+        DB::commit();
+
+        return back();
     }
 }

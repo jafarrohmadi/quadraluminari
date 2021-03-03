@@ -34,6 +34,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('active-opportunity-reminder', 'ActiveOpportunityReminderController');
 
     Route::get('get-active-opportunity-history/{id}', 'ActiveOpportunityHistoryController@index')->name('get-active-opportunity-history.index');
+    Route::resource('active-opportunity-history', 'ActiveOpportunityHistoryController');
+
 
     Route::get('get-active-client', 'GetActiveClientController@index')->name('get-active-client.index');
 
