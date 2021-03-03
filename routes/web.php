@@ -27,12 +27,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('active-client/destroy', 'ActiveClientController@massDestroy')->name('active-client.massDestroy');
     Route::resource('active-client', 'ActiveClientController');
 
-    Route::delete('active-opportunity/destroy', 'ActiveOpportunityController@massDestroy')->name('active-opportunity.massDestroy');
+    Route::delete('active-opportunity/destroy',
+        'ActiveOpportunityController@massDestroy')->name('active-opportunity.massDestroy');
     Route::resource('active-opportunity', 'ActiveOpportunityController');
 
-     Route::resource('active-opportunity-reminder', 'ActiveOpportunityReminderController');
+    Route::resource('active-opportunity-reminder', 'ActiveOpportunityReminderController');
 
-    Route::get('get-active-client','GetActiveClientController@index')->name('get-active-client.index');
+    Route::get('get-active-opportunity-history/{id}', 'ActiveOpportunityHistoryController@index')->name('get-active-opportunity-history.index');
+
+    Route::get('get-active-client', 'GetActiveClientController@index')->name('get-active-client.index');
 
     Route::get('getCityByProvinceId/{id}', 'CityController@getCityByProvinceId');
 });

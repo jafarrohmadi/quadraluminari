@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Observer\Blameable;
+use App\Models\Traits\Relationship\ActiveOpportunityHistoryRelationship;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class ActiveOpportunityHistory extends Model
 {
-    use Blameable,SoftDeletes;
+    use Blameable,SoftDeletes ,ActiveOpportunityHistoryRelationship;
 
     protected $fillable = [
         'active_opportunity_id',

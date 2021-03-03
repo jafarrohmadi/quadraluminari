@@ -84,7 +84,6 @@
             $('.navbar-toggler').click(function (e){
                 table.columns.adjust().draw();
             })
-
         })
 
     </script>

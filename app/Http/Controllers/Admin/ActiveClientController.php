@@ -64,6 +64,18 @@ class  ActiveClientController extends Controller
                 return $row->addressCityData->name ?? '';
             });
 
+            $table->editColumn('contact_person_mobile_email', function ($row) {
+                $data = [];
+                if (isset($row->contact_person_mobile_email)) {
+                    $explode = explode(";",$row->contact_person_mobile_email);
+
+                    foreach ( $explode as $email) {
+                        $data [] = sprintf('<span class="badge badge-info">%s</span>', $email);
+                    }
+                }
+
+                return $data ? implode(" ", $data) : '';
+            });
 
             $table->editColumn('actions', function ($row) {
                 $viewGate      = 'active_client_view';
@@ -80,6 +92,8 @@ class  ActiveClientController extends Controller
                 );
             }
             );
+
+            $table->rawColumns(['actions', 'placeholder', 'contact_person_mobile_email']);
 
             return $table->make(true);
         }

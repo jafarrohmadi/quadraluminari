@@ -343,6 +343,8 @@
 
         </div>
     </form>
+
+    @include('admin.active-opportunity-history.index')
 @endsection
 
 @section('scripts')

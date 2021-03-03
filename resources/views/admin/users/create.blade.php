@@ -91,17 +91,17 @@
                                     </label>
                                 </div>
                             @endforeach
-                            <br>
-                            <h4>User Management</h4>
-                            @foreach($permission->whereIn('id', [10,11,12,13]) as  $permissions)
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" name="permissions[]"
-                                               value="{{$permissions->id}}"
-                                               id="defaultCheck{{$permissions->id}}"> {{$permissions->name}}
-                                    </label>
-                                </div>
-                            @endforeach
+{{--                            <br>--}}
+{{--                            <h4>User Management</h4>--}}
+{{--                            @foreach($permission->whereIn('id', [10,11,12,13]) as  $permissions)--}}
+{{--                                <div class="form-check">--}}
+{{--                                    <label class="form-check-label">--}}
+{{--                                        <input type="checkbox" class="form-check-input" name="permissions[]"--}}
+{{--                                               value="{{$permissions->id}}"--}}
+{{--                                               id="defaultCheck{{$permissions->id}}"> {{$permissions->name}}--}}
+{{--                                    </label>--}}
+{{--                                </div>--}}
+{{--                            @endforeach--}}
                         </div>
                     </div>
                     @if($errors->has('permissions'))

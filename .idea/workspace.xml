@@ -5,14 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="175b8c10-5239-48ca-9b9a-434e2d3de073" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityReminderController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity-reminder/edit.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity-reminder/index.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity-reminder/show.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity/show.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityHistoryController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/Traits/Relationship/ActiveOpportunityHistoryRelationship.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity-history/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveClientController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveClientController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/ActiveOpportunityHistory.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ActiveOpportunityHistory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/active-opportunity-reminder/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity-reminder/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/active-opportunity-reminder/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity-reminder/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/active-opportunity-reminder/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity-reminder/show.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/active-opportunity/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/active-opportunity/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/users/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/users/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/users/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/users/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/users/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/users/show.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -147,7 +153,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../laravel-boilerplate" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
@@ -189,6 +195,10 @@
       <workItem from="1614650596651" duration="6396000" />
       <workItem from="1614659485397" duration="4221000" />
       <workItem from="1614680398589" duration="10601000" />
+      <workItem from="1614744741242" duration="3385000" />
+      <workItem from="1614760415382" duration="953000" />
+      <workItem from="1614761980279" duration="709000" />
+      <workItem from="1614763969795" duration="5599000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <created>1614444390250</created>
@@ -246,11 +256,11 @@
     </state>
     <state x="113" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.728@0.0.1366.728" timestamp="1614653822633" />
     <state x="113" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1614699388203" />
-    <state x="467" y="121" key="FileChooserDialogImpl" timestamp="1614650900059">
+    <state x="467" y="121" key="FileChooserDialogImpl" timestamp="1614760768236">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="467" y="121" key="FileChooserDialogImpl/0.0.1366.728/1366.0.1366.728@0.0.1366.728" timestamp="1614650900059" />
-    <state x="467" y="121" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1614565593199" />
+    <state x="467" y="121" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1614760768236" />
     <state width="1323" height="179" key="GridCell.Tab.0.bottom" timestamp="1614361755327">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -267,15 +277,15 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1323" height="179" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1614361755326" />
-    <state x="521" y="291" width="323" height="147" key="NewPhpFileDialog" timestamp="1614706306469">
+    <state x="521" y="291" width="323" height="147" key="NewPhpFileDialog" timestamp="1614769744431">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="521" y="289" key="NewPhpFileDialog/0.0.1366.728/1366.0.1366.728@0.0.1366.728" timestamp="1614667378918" />
-    <state x="521" y="291" width="323" height="147" key="NewPhpFileDialog/0.0.1366.728@0.0.1366.728" timestamp="1614706306469" />
-    <state x="188" y="11" key="SettingsEditor" timestamp="1614555489367">
+    <state x="521" y="291" width="323" height="147" key="NewPhpFileDialog/0.0.1366.728@0.0.1366.728" timestamp="1614769744431" />
+    <state x="188" y="11" key="SettingsEditor" timestamp="1614770981080">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="188" y="11" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1614555489367" />
+    <state x="188" y="11" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1614770981080" />
     <state x="279" y="99" key="Vcs.Push.Dialog.v2" timestamp="1614699410806">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -288,10 +298,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="343" y="164" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1614608560400" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1614702577768">
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1614771397538">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728/1366.0.1366.728@0.0.1366.728" timestamp="1614666489045" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1614702577768" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1614771397538" />
   </component>
 </project>
