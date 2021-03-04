@@ -169,14 +169,14 @@
                             {{ $activeClient->address_mailing_address }}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            Country
-                        </th>
-                        <td>
-                            {{ $activeClient->address_country }}
-                        </td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            Country--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $activeClient->address_country }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
                     <tr>
                         <th>
                             Province

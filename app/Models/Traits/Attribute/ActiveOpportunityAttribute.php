@@ -40,4 +40,22 @@ trait ActiveOpportunityAttribute
 
         return $data[$currency];
     }
+
+    public function getStatus($status)
+    {
+        $text = '';
+        switch ($status) {
+            case self::STATUS_SUCCESS:
+                $text = 'Finish';
+                break;
+            case self::STATUS_FAILED:
+                $text = 'Failed';
+                break;
+            default:
+                $text = 'On Progress';
+                break;
+        }
+
+        return $text;
+    }
 }

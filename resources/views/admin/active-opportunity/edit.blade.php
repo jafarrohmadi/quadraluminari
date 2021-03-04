@@ -335,6 +335,21 @@
                               name="act_history_notes_reminder">{!! old('act_history_notes_reminder', $activeOpportunity->activeOpportunityHistoryReminderData->last()->act_history_notes_reminder) !!}</textarea>
                 </div>
                 <div class="form-group">
+                    <label class="" for="name">Status</label>
+                    <div class="switch-field">
+                        <input type="radio" id="radio-three" name="status"
+                               value="{{\App\Models\ActiveOpportunity::STATUS_ON_PROGRESS}}" checked/>
+                        <label for="radio-three">On Progress </label>
+                        <input type="radio" id="radio-four" name="status"
+                               value="{{\App\Models\ActiveOpportunity::STATUS_SUCCESS}}" @if($activeOpportunity->status == \App\Models\ActiveOpportunity::STATUS_SUCCESS) checked @endif/>
+                        <label for="radio-four">Finish </label>
+                        <input type="radio" id="radio-five" name="status"
+                               value="{{\App\Models\ActiveOpportunity::STATUS_FAILED}}"  @if($activeOpportunity->status == \App\Models\ActiveOpportunity::STATUS_FAILED) checked @endif/>
+                        <label for="radio-five">Failed</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <button class="btn btn-danger" type="submit">
                         {{ trans('global.update') }}
                     </button>

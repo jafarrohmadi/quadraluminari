@@ -199,6 +199,7 @@ class ActiveOpportunityController extends Controller
                 $opportunity->activeOpportunityHistoryData->first()->act_history_other_name ||
                 $request->opportunity_status_remarks !=
                 $opportunity->activeOpportunityHistoryData->first()->opportunity_status_remarks
+                || $request->status != $opportunity->activeOpportunityHistoryData->first()->status
 
             ) {
                 $input                          = $request->all();

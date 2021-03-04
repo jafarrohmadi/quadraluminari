@@ -62,12 +62,26 @@ class ActiveOpportunityReminderController extends Controller
 
         if ($request->ajax()) {
             if (me()->id == 1) {
-                $query = $this->activeOpportunityRepository->allQuery(['reminder' => 1], ['activeClientData', 'userData', 'activeOpportunityHistoryReminderData']);
+                $query = $this->activeOpportunityRepository->allQuery(['reminder' => 1,],
+                    ['activeClientData', 'userData']);
             }
             else {
                 $query = $this->activeOpportunityRepository->allQuery(['user_id' => me()->id, 'reminder' => 1],
-                    ['activeClientData', 'userData', 'activeOpportunityHistoryReminderData']);
+                    ['activeClientData', 'userData']);
             }
+
+            $query = $query->join('active_opportunity_reminders', 'active_opportunities.id',
+                'active_opportunity_reminders.active_opportunity_id')
+                ->where('active_opportunity_reminders.id', function ($query) {
+                    $query->select('id')
+                        ->from('active_opportunity_reminders')
+                        ->whereColumn('active_opportunity_id', 'active_opportunities.id')
+                        ->latest()
+                        ->limit(1);
+                })->where('active_opportunity_reminders.act_history_date_reminder', '>=', date('Y-m-d'))
+                ->select('active_opportunities.*',
+                    'active_opportunity_reminders.act_history_date_reminder',
+                    'active_opportunity_reminders.act_history_order_reminder');
 
             $table = Datatables::of($query);
             $table->addColumn('placeholder', ' ');
@@ -91,13 +105,11 @@ class ActiveOpportunityReminderController extends Controller
                        number_format($row->value, 2, ',', '.');
             });
 
-            $table->editColumn('act_history_date_reminder', function ($row)
-            {
+            $table->editColumn('act_history_date_reminder', function ($row) {
                 return $row->activeOpportunityHistoryReminderData->last()->act_history_date_reminder ?? '';
             });
 
-            $table->editColumn('act_history_order_reminder', function ($row)
-            {
+            $table->editColumn('act_history_order_reminder', function ($row) {
                 return $row->activeOpportunityHistoryReminderData->last()->act_history_order_reminder ?? '';
             });
 
@@ -172,7 +184,8 @@ class ActiveOpportunityReminderController extends Controller
                 $request->act_history_other_name !=
                 $opportunity->activeOpportunityHistoryData->first()->act_history_other_name ||
                 $request->opportunity_status_remarks !=
-                $opportunity->activeOpportunityHistoryData->first()->opportunity_status_remarks
+                $opportunity->activeOpportunityHistoryData->first()->opportunity_status_remarks ||
+                $request->status != $opportunity->activeOpportunityHistoryData->first()->status
 
             ) {
                 $input                          = $request->all();
@@ -202,7 +215,7 @@ class ActiveOpportunityReminderController extends Controller
 
         DB::commit();
 
-        return redirect()->route('admin.active-opportunity.index');
+        return redirect()->route('admin.active-opportunity-reminder.index');
 
     }
 

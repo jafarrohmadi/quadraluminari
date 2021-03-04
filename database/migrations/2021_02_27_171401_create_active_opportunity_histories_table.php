@@ -24,6 +24,7 @@ class CreateActiveOpportunityHistoriesTable extends Migration
             $table->text('act_history_remarks')->nullable();
             $table->string('opportunity_status')->nullable();
             $table->text('opportunity_status_remarks')->nullable();
+            $table->integer('status')->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();
             $table->timestamps();

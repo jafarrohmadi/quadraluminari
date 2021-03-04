@@ -30,6 +30,7 @@ class ActiveOpportunity extends Model
         'opportunity_status',
         'opportunity_status_remarks',
         'reminder',
+        'status',
         'created_by',
         'updated_by',
     ];
@@ -43,5 +44,7 @@ class ActiveOpportunity extends Model
     public const ACT_HISTORY_PRESENTATION = 4;
     public const ACT_HISTORY_OTHER = 5;
 
-
+    public const STATUS_SUCCESS = 1;
+    public const STATUS_FAILED = 2;
+    public const STATUS_ON_PROGRESS = 3;
 }

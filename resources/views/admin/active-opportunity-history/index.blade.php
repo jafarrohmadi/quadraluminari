@@ -35,6 +35,9 @@
                     Opportunity Status Remarks
                 </th>
                 <th>
+                    Status
+                </th>
+                <th>
                     Created By
                 </th>
                 @if (me()->id == 1)
@@ -72,6 +75,7 @@
                     { data: 'act_history_remarks', name: 'act_history_remarks' },
                     { data: 'opportunity_status', name: 'opportunity_status' },
                     { data: 'opportunity_status_remarks', name: 'opportunity_status_remarks' },
+                    { data: 'status', name: 'status' },
                     { data: 'created_by', name: 'created_by' },
                         @if (me()->id == 1)
                     {

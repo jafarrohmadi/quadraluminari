@@ -197,17 +197,17 @@
                     @endif
                 </div>
 
-                <div class="form-group">
-                    <label class="" for="name">Country</label>
-                    <input class="form-control {{ $errors->has('address_country') ? 'is-invalid' : '' }}"
-                           type="text" name="address_country"
-                           id="address_country" value="{{ old('address_country', $activeClient->address_country) }}">
-                    @if($errors->has('address_country'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('address_country') }}
-                        </div>
-                    @endif
-                </div>
+{{--                <div class="form-group">--}}
+{{--                    <label class="" for="name">Country</label>--}}
+{{--                    <input class="form-control {{ $errors->has('address_country') ? 'is-invalid' : '' }}"--}}
+{{--                           type="text" name="address_country"--}}
+{{--                           id="address_country" value="{{ old('address_country', $activeClient->address_country) }}">--}}
+{{--                    @if($errors->has('address_country'))--}}
+{{--                        <div class="invalid-feedback">--}}
+{{--                            {{ $errors->first('address_country') }}--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+{{--                </div>--}}
 
                 <div class="form-group">
                     <label for="name" class="">Province</label>

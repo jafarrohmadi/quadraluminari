@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class ActiveOpportunityHistory extends Model
 {
-    use Blameable,SoftDeletes ,ActiveOpportunityHistoryRelationship;
+    use Blameable, SoftDeletes, ActiveOpportunityHistoryRelationship;
 
     protected $fillable = [
         'active_opportunity_id',
@@ -25,7 +25,8 @@ class ActiveOpportunityHistory extends Model
         'act_history_remarks',
         'opportunity_status',
         'opportunity_status_remarks',
+        'status',
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
 }
