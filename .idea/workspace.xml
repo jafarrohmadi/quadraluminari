@@ -4,26 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="175b8c10-5239-48ca-9b9a-434e2d3de073" name="Default Changelist" comment="ACTIVE HISTORY Edit">
+    <list default="true" id="175b8c10-5239-48ca-9b9a-434e2d3de073" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityHistoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityHistoryController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityReminderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ActiveOpportunityReminderController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/ActiveOpportunity.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ActiveOpportunity.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/ActiveOpportunityHistory.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ActiveOpportunityHistory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Traits/Attribute/ActiveOpportunityAttribute.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Traits/Attribute/ActiveOpportunityAttribute.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_02_26_155414_create_active_client_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_02_26_155414_create_active_client_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_02_27_165252_create_active_opportunities_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_02_27_165252_create_active_opportunities_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_02_27_171401_create_active_opportunity_histories_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_02_27_171401_create_active_opportunity_histories_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/active-client/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-client/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/active-client/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-client/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/active-client/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-client/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/active-opportunity-history/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity-history/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/active-opportunity/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/users/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/users/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/active-client/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-client/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -207,7 +193,9 @@
       <workItem from="1614823882696" duration="2352000" />
       <workItem from="1614837751477" duration="1928000" />
       <workItem from="1614848742363" duration="578000" />
-      <workItem from="1614866195262" duration="10902000" />
+      <workItem from="1614866195262" duration="12023000" />
+      <workItem from="1614939346778" duration="4856000" />
+      <workItem from="1615043518721" duration="4725000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <created>1614444390250</created>
@@ -244,7 +232,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614776540071</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="ACTIVE HISTORY Edit">
+      <created>1614879659714</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1614879659714</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -271,20 +266,20 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="448" y="73" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1614557493855" />
-    <state x="417" y="121" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1614780959566">
+    <state x="417" y="121" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1614939782585">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="417" y="121" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.728@0.0.1366.728" timestamp="1614667924219" />
-    <state x="417" y="121" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1614780959566" />
+    <state x="417" y="121" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1614939782585" />
     <state x="434" y="210" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1614441639634">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="434" y="210" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1366.728@0.0.1366.728" timestamp="1614441639634" />
-    <state x="113" y="0" key="CommitChangelistDialog2" timestamp="1614779836061">
+    <state x="113" y="0" key="CommitChangelistDialog2" timestamp="1614879656839">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="113" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.728@0.0.1366.728" timestamp="1614653822633" />
-    <state x="113" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1614779836061" />
+    <state x="113" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1614879656839" />
     <state x="467" y="121" key="FileChooserDialogImpl" timestamp="1614874207620">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -315,22 +310,22 @@
     </state>
     <state x="521" y="289" key="NewPhpFileDialog/0.0.1366.728/1366.0.1366.728@0.0.1366.728" timestamp="1614667378918" />
     <state x="521" y="291" width="323" height="147" key="NewPhpFileDialog/0.0.1366.728@0.0.1366.728" timestamp="1614774608019" />
-    <state x="188" y="11" key="SettingsEditor" timestamp="1614878383534">
+    <state x="188" y="11" key="SettingsEditor" timestamp="1615048278347">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="188" y="11" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1614878383534" />
-    <state x="279" y="99" key="Vcs.Push.Dialog.v2" timestamp="1614776557495">
+    <state x="188" y="11" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1615048278347" />
+    <state x="279" y="99" key="Vcs.Push.Dialog.v2" timestamp="1614879679919">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="279" y="99" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1614776557495" />
+    <state x="279" y="99" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1614879679919" />
     <state x="585" y="226" key="com.intellij.database.actions.DdlActions$CreateObject$1" timestamp="1614872733017">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="585" y="226" key="com.intellij.database.actions.DdlActions$CreateObject$1/0.0.1366.728@0.0.1366.728" timestamp="1614872733017" />
-    <state x="729" y="70" width="485" height="588" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1614873003401">
+    <state x="729" y="70" width="485" height="588" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1614880657349">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="729" y="70" width="485" height="588" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.1366.728@0.0.1366.728" timestamp="1614873003401" />
+    <state x="729" y="70" width="485" height="588" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.1366.728@0.0.1366.728" timestamp="1614880657349" />
     <state x="390" y="97" width="585" height="534" key="find.popup" timestamp="1614361553928">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -339,10 +334,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="343" y="164" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1614774004272" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1614874663200">
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1614941608840">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728/1366.0.1366.728@0.0.1366.728" timestamp="1614666489045" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1614874663200" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1614941608840" />
   </component>
 </project>

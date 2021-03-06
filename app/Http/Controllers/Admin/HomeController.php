@@ -3,19 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\ActiveClient;
+use App\Models\ActiveOpportunity;
 use App\Repositories\ActiveClientRepository;
+use App\Repositories\ActiveOpportunityRepository;
 use App\Repositories\CityRepository;
 use App\Repositories\ProvinceRepository;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\DataTables;
 use Gate;
+
 class HomeController
 {
     /**
      * @var ActiveClientRepository
      */
-    protected $activeClient, $province, $city;
+    protected $activeOpportunityRepository, $province, $city;
 
     /**
      * ActiveClientController constructor.
@@ -24,65 +27,152 @@ class HomeController
      * @param CityRepository $cityRepository
      */
     public function __construct(
-        ActiveClientRepository $activeClient, ProvinceRepository $provinceRepository, CityRepository $cityRepository
+        ActiveOpportunityRepository $activeOpportunityRepository, ProvinceRepository $provinceRepository,
+        CityRepository $cityRepository
     ) {
-        $this->activeClient = $activeClient;
-        $this->province     = $provinceRepository;
-        $this->city         = $cityRepository;
+        $this->activeOpportunityRepository = $activeOpportunityRepository;
+        $this->province                    = $provinceRepository;
+        $this->city                        = $cityRepository;
     }
 
-    public function index(Request  $request)
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function index()
     {
         abort_if(Gate::denies('dashboard'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            $query = $this->activeClient->allQuery([], ['addressCityData']);
-
-            $table = Datatables::of($query);
-            $table->addColumn('placeholder', ' ');
-            $table->addColumn('actions', '&nbsp;');
-
-            $table->editColumn('status', function ($row) {
-                return (new ActiveClient)->getStatus($row->status);
-            });
-
-            $table->editColumn('address_city_id', function ($row) {
-                return $row->addressCityData->name ?? '';
-            });
-
-            $table->editColumn('contact_person_mobile_email', function ($row) {
-                $data = [];
-                if (isset($row->contact_person_mobile_email)) {
-                    $explode = explode(";",$row->contact_person_mobile_email);
-
-                    foreach ( $explode as $email) {
-                        $data [] = sprintf('<span class="badge badge-info">%s</span>', $email);
-                    }
-                }
-
-                return $data ? implode(" ", $data) : '';
-            });
-
-            $table->editColumn('actions', function ($row) {
-                $viewGate      = 'active_client_view';
-                $editGate      = 'active_client_edit';
-                $deleteGate    = 'active_client_delete';
-                $crudRoutePart = 'active-client';
-                return view('partials.datatablesActions', compact(
-                        'viewGate',
-                        'editGate',
-                        'deleteGate',
-                        'crudRoutePart',
-                        'row'
-                    )
-                );
-            }
-            );
-
-            $table->rawColumns(['actions', 'placeholder', 'contact_person_mobile_email']);
-
-            return $table->make(true);
-        }
         return view('home');
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws \Exception
+     */
+    public function dataTable(Request $request)
+    {
+        $where = [];
+        if ($request->date_start != null) {
+            $where[] = ['act_history_date', '>=', $request->date_start];
+        }
+
+        if ($request->date_end != null) {
+            $where[] = ['act_history_date', '<=', $request->date_end];
+        }
+
+        if ($request->opportunity_status != null) {
+            $where['opportunity_status'] = $request->opportunity_status;
+        }
+
+        if (me()->id == 1) {
+            $query = $this->activeOpportunityRepository->allQuery($where, [
+                'activeClientData', 'userData', 'activeClientData.addressCityData',
+                'activeOpportunityHistoryReminderData',
+            ]);
+        }
+        else {
+            $where['user_id'] = me()->id;
+
+            $query = $this->activeOpportunityRepository->allQuery($where,
+                [
+                    'activeClientData', 'userData', 'activeClientData.addressCityData',
+                    'activeOpportunityHistoryReminderData',
+                ]);
+        }
+
+        $table = Datatables::of($query);
+        $table->addColumn('placeholder', ' ');
+        $table->addColumn('actions', '&nbsp;');
+
+        $table->editColumn('active_client_id', function ($row) {
+            return $row->activeClientData->name ?? '';
+        });
+
+        $table->editColumn('mailing_address', function ($row) {
+            return $row->activeClientData->address_mailing_address ?? '';
+        });
+
+        $table->editColumn('city_id', function ($row) {
+            return $row->activeClientData->addressCityData->name ?? '';
+        });
+
+        $table->editColumn('postal_code', function ($row) {
+            return $row->activeClientData->address_postal_code ?? '';
+        });
+
+        $table->editColumn('contact_person_name', function ($row) {
+            return $row->activeClientData->contact_person_name ?? '';
+        });
+
+        $table->editColumn('contact_person_grade', function ($row) {
+            return $row->activeClientData->contact_person_name ?? '';
+        });
+
+        $table->editColumn('phone', function ($row) {
+            return $row->activeClientData->contact_person_phone ?? '';
+        });
+
+        $table->editColumn('mobile_phone', function ($row) {
+            return $row->activeClientData->contact_person_mobile_phone ?? '';
+        });
+
+        $table->editColumn('email', function ($row) {
+            return $row->activeClientData->contact_person_mobile_email ?? '';
+        });
+
+        $table->editColumn('user_id', function ($row) {
+            return $row->userData->name ?? '';
+        });
+
+        $table->editColumn('act_history', function ($row) {
+            return $row->act_history !=
+                   \App\Models\ActiveOpportunity::ACT_HISTORY_OTHER ? (new ActiveOpportunity)->getActHistory($row->act_history) : $row->act_history_other_name;
+        });
+
+        $table->editColumn('value', function ($row) {
+            return (new ActiveOpportunity)->getCurrency($row->value_currency) . ' ' .
+                   number_format($row->value, 2, ',', '.');
+        });
+
+        $table->editColumn('reminder', function ($row) {
+            return $row->reminder == 1 ? 'Ya' : 'Tidak';
+        });
+
+        $table->editColumn('act_history_reminder', function ($row) {
+            return $row->activeOpportunityHistoryReminderData->last()->act_history_reminder !=
+                   \App\Models\ActiveOpportunity::ACT_HISTORY_OTHER ? (new ActiveOpportunity)->getActHistory($row->activeOpportunityHistoryReminderData->last()->act_history_reminder) : $row->activeOpportunityHistoryReminderData->last()->act_history_other_name_reminder;
+        });
+
+        $table->editColumn('act_history_date_reminder', function ($row) {
+            return $row->activeOpportunityHistoryReminderData->last()->act_history_date_reminder ?? '';
+        });
+        $table->editColumn('act_history_order_reminder', function ($row) {
+            return $row->activeOpportunityHistoryReminderData->last()->act_history_order_reminder ?? '';
+        });
+
+        $table->editColumn('act_history_notes_reminder', function ($row) {
+            return $row->activeOpportunityHistoryReminderData->last()->act_history_notes_reminder ?? '';
+        });
+
+
+        $table->editColumn('actions', function ($row) {
+            $viewGate      = 'active_opportunity_view';
+            $editGate      = 'active_opportunity_edit';
+            $deleteGate    = 'active_opportunity_delete';
+            $crudRoutePart = 'active-opportunity';
+            return view('partials.datatablesActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                )
+            );
+        }
+        );
+
+        return $table->make(true);
+
     }
 }

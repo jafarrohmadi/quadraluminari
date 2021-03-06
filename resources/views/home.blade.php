@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-danger submitData" type="submit">
+                            <button class="btn btn-danger submitData" type="submit" id="submitData">
                                 Submit
                             </button>
                         </div>
@@ -57,13 +57,13 @@
         </div>
     </div>
 
-    <div class="card scriptActive" style="display: none">
+    <div class="card" id="activeClick" style="display: none">
         <div class="card-header">
             Active Client {{ trans('global.list') }}
         </div>
 
         <div class="card-body">
-            <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-HistoryShip">
+            <table class="table table-bordered table-striped table-hover datatable-HistoryShip" width="100%">
                 <thead>
                 <tr>
                     <th width="10">
@@ -73,30 +73,71 @@
                         Updated At
                     </th>
                     <th>
+                        Product Name
+                    </th>
+                    <th>
                         Company Name
                     </th>
                     <th>
-                        PIC
-                    </th>
-                    <th>
-                        Email
-                    </th>
-                    <th>
-                        Phone
+                        Mailing Address
                     </th>
                     <th>
                         City
                     </th>
                     <th>
-                        Student
+                        Postal Code
                     </th>
                     <th>
-                        Lecture
+                        Contact Person
                     </th>
                     <th>
-                        Status
+                        Jabatan
                     </th>
-
+                    <th>
+                        Phone
+                    </th>
+                    <th>
+                        Mobile Phone
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        PIC
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                    <th>
+                        Date Acc/Opp
+                    </th>
+                    <th>
+                        Act
+                    </th>
+                    <th>
+                        Act Remarks
+                    </th>
+                    <th>
+                        Opp Status
+                    </th>
+                    <th>
+                        Opp Status Remarks
+                    </th>
+                    <th>
+                        Reminder
+                    </th>
+                    <th>
+                        Reminder Date
+                    </th>
+                    <th>
+                        Act Reminder
+                    </th>
+                    <th>
+                        Act Order
+                    </th>
+                    <th>
+                        Notes
+                    </th>
                 </tr>
                 </thead>
             </table>
@@ -106,52 +147,80 @@
 @section('scripts')
     @parent
     <script>
-
-        $('.submitData').click(function (e) {
-            load_data($('#date_start').val(), $('#date_end').val())
-            $('.scriptActive').show()
-        })
-
-        function load_data (date_start = '', date_end = '')
-        {
-            let dtButtons         = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            let dtOverrideGlobals = {
-                buttons: dtButtons,
-                processing: true,
-                serverSide: true,
-                retrieve: true,
-                aaSorting: [],
-                ajax: {
-                    url: "{{ route('admin.home') }}",
-                    data: { date_start: date_start, date_end: date_end }
+        let dtButtons         = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+        let dtOverrideGlobals = {
+            buttons: dtButtons,
+            processing: true,
+            serverSide: true,
+            retrieve: true,
+            aaSorting: [],
+            ajax: {
+                url: "{{ route('admin.homePost') }}",
+                type: 'POST',
+                data: function (data) {
+                    var startDate         = $('#date_start').val()
+                    var endDate           = $('#date_end').val()
+                    var opportunityStatus = $('#opportunity_status').val()
+                    data.date_start         = startDate
+                    data.date_end           = endDate
+                    data.opportunity_status = opportunityStatus
+                    data._token             = "{{ csrf_token() }}"
+                }
+            },
+            columns: [
+                { data: 'placeholder', name: 'placeholder' },
+                { data: 'updated_at', name: 'updated_at' },
+                { data: 'product_name', name: 'product_name' },
+                { data: 'active_client_id', name: 'active_client_id' },
+                { data: 'mailing_address', name: 'activeClientData.address_mailing_address' },
+                { data: 'city_id', name: 'activeClientData.contact_person_city_id' },
+                { data: 'postal_code', name: 'activeClientData.address_postal_code' },
+                { data: 'contact_person_name', name: 'activeClientData.contact_person_name' },
+                { data: 'contact_person_grade', name: 'activeClientData.contact_person_grade' },
+                { data: 'phone', name: 'activeClientData.contact_person_name' },
+                { data: 'mobile_phone', name: 'activeClientData.contact_person_mobile_phone' },
+                { data: 'email', name: 'activeClientData.contact_person_mobile_email' },
+                { data: 'user_id', name: 'user_id' },
+                { data: 'value', name: 'value' },
+                { data: 'act_history_date', name: 'act_history_date' },
+                { data: 'act_history', name: 'act_history' },
+                { data: 'act_history_remarks', name: 'act_history_remarks' },
+                { data: 'opportunity_status', name: 'opportunity_status' },
+                { data: 'opportunity_status_remarks', name: 'opportunity_status_remarks' },
+                { data: 'reminder', name: 'reminder' },
+                {
+                    data: 'act_history_date_reminder',
+                    name: 'activeOpportunityHistoryReminderData.act_history_date_reminder'
                 },
-                columns: [
-                    { data: 'placeholder', name: 'placeholder' },
-                    { data: 'updated_at', name: 'updated_at' },
-                    { data: 'name', name: 'name' },
-                    { data: 'contact_person_name', name: 'contact_person_name' },
-                    { data: 'contact_person_mobile_email', name: 'contact_person_mobile_email' },
-                    { data: 'contact_person_phone', name: 'contact_person_phone' },
-                    { data: 'address_city_id', name: 'address_city_id' },
-                    { data: 'number_of_students', name: 'number_of_students' },
-                    { data: 'number_of_lecturers', name: 'number_of_lecturers' },
-                    { data: 'status', name: 'status' },
-                ], colReorder: {
-                    order: [1]
+                { data: 'act_history_reminder', name: 'activeOpportunityHistoryReminderData.act_history_reminder' },
+                {
+                    data: 'act_history_order_reminder',
+                    name: 'activeOpportunityHistoryReminderData.act_history_order_reminder'
                 },
-                order: [[1, 'desc']],
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
-                pageLength: -1
-            }
+                {
+                    data: 'act_history_notes_reminder',
+                    name: 'activeOpportunityHistoryReminderData.act_history_notes_reminder'
+                },
 
-            $('.datatable-HistoryShip').DataTable(dtOverrideGlobals)
+            ], colReorder: {
+                order: [1]
+            },
+            order: [[1, 'desc']],
+            responsive: true,
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
+            pageLength: -1
         }
 
-        $('.navbar-toggler').click(function (e) {
-            $($.fn.dataTable.tables(true)).DataTable()
-                .columns.adjust()
+        $('.submitData').click(function (e) {
+            var table = $('.datatable-HistoryShip').DataTable(dtOverrideGlobals)
+            $('#activeClick').show()
+            table.draw()
         })
 
-
+        setTimeout(
+            function () {
+                $('.submitData').trigger('click')
+            },
+            500)
     </script>
 @endsection
