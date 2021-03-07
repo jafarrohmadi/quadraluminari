@@ -20,8 +20,8 @@ class CreateActiveOpportunityRemindersTable extends Migration
             $table->integer('act_history_reminder')->default(1);
             $table->string('act_history_other_name_reminder')->nullable();
             $table->string('act_history_order_reminder')->nullable();
-            $table->date('act_history_date_reminder');
-            $table->text('act_history_notes_reminder');
+            $table->date('act_history_date_reminder')->nullable();
+            $table->text('act_history_notes_reminder')->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();
             $table->timestamps();

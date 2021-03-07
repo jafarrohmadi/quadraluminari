@@ -202,7 +202,7 @@
                             <label class="" for="name">Act History Remarks</label>
                             <textarea class="form-control {{ $errors->has('act_history_remarks') ? 'is-invalid' : '' }}"
                                       id="act_history_remarks"
-                                      name="act_history_remarks"> {{ old('act_history_remarks', '') }} </textarea>
+                                      name="act_history_remarks">{{ old('act_history_remarks', '') }}</textarea>
                         </div>
 
                         <div class="form-group">
@@ -217,7 +217,7 @@
                             <textarea
                                 class="form-control {{ $errors->has('opportunity_status_remarks') ? 'is-invalid' : '' }}"
                                 id="opportunity_status_remarks"
-                                name="opportunity_status_remarks"> {{ old('opportunity_status_remarks', '') }} </textarea>
+                                name="opportunity_status_remarks">{{ old('opportunity_status_remarks', '') }}</textarea>
                         </div>
 
                     </div>
@@ -293,14 +293,14 @@
                     <label class="" for="name">Act Order Reminder</label>
                     <textarea class="form-control {{ $errors->has('act_history_order_reminder') ? 'is-invalid' : '' }}"
                               id="act_history_order_reminder"
-                              name="act_history_order_reminder"> {{ old('act_history_order_reminder', '') }} </textarea>
+                              name="act_history_order_reminder">{{ old('act_history_order_reminder', '') }}</textarea>
                 </div>
 
                 <div class="form-group">
                     <label class="" for="name">Act Notes</label>
                     <textarea class="form-control {{ $errors->has('act_history_notes_reminder') ? 'is-invalid' : '' }}"
                               id="act_history_notes_reminder"
-                              name="act_history_notes_reminder"> {{ old('act_history_notes_reminder', '') }} </textarea>
+                              name="act_history_notes_reminder">{{ old('act_history_notes_reminder', '') }}</textarea>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-danger" type="submit">

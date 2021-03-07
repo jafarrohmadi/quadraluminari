@@ -20,7 +20,7 @@ class CreateActiveOpportunityHistoriesTable extends Migration
             $table->string('product_name')->nullable();
             $table->integer('act_history')->default(1);
             $table->string('act_history_other_name')->nullable();
-            $table->date('act_history_date');
+            $table->date('act_history_date')->nullable();
             $table->text('act_history_remarks')->nullable();
             $table->string('opportunity_status')->nullable();
             $table->text('opportunity_status_remarks')->nullable();

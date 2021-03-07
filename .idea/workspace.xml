@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="175b8c10-5239-48ca-9b9a-434e2d3de073" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/mail/reminder.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Console/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Kernel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/ActiveOpportunityReminder.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ActiveOpportunityReminder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/migrations/2021_02_27_165252_create_active_opportunities_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_02_27_165252_create_active_opportunities_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_02_27_171401_create_active_opportunity_histories_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_02_27_171401_create_active_opportunity_histories_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/migrations/2021_02_27_182139_create_active_opportunity_reminders_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_02_27_182139_create_active_opportunity_reminders_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/active-opportunity/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/active-opportunity/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mail/reminder.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mail/reminder.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,7 +197,7 @@
       <workItem from="1614866195262" duration="12023000" />
       <workItem from="1614939346778" duration="4856000" />
       <workItem from="1615043518721" duration="9795000" />
-      <workItem from="1615110714033" duration="4413000" />
+      <workItem from="1615110714033" duration="7591000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <created>1614444390250</created>
@@ -251,7 +248,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615048414135</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Fix Mail">
+      <created>1615138197771</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1615138197771</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -264,7 +268,8 @@
     <MESSAGE value="ACTIVE HISTORY" />
     <MESSAGE value="ACTIVE HISTORY Edit" />
     <MESSAGE value="Fix Admin" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix Admin" />
+    <MESSAGE value="Fix Mail" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix Mail" />
   </component>
   <component name="WindowStateProjectService">
     <state x="279" y="24" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1614872743735">
@@ -288,11 +293,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="434" y="210" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1366.728@0.0.1366.728" timestamp="1614441639634" />
-    <state x="113" y="0" key="CommitChangelistDialog2" timestamp="1615048411689">
+    <state x="139" y="0" key="CommitChangelistDialog2" timestamp="1615138195667">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="113" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.728@0.0.1366.728" timestamp="1614653822633" />
-    <state x="113" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1615048411689" />
+    <state x="139" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1615138195667" />
     <state x="467" y="121" key="FileChooserDialogImpl" timestamp="1614874207620">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -327,10 +332,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="188" y="11" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1615138013854" />
-    <state x="279" y="99" key="Vcs.Push.Dialog.v2" timestamp="1615048527248">
+    <state x="279" y="99" key="Vcs.Push.Dialog.v2" timestamp="1615138212079">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="279" y="99" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1615048527248" />
+    <state x="279" y="99" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1615138212079" />
     <state x="585" y="226" key="com.intellij.database.actions.DdlActions$CreateObject$1" timestamp="1614872733017">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
