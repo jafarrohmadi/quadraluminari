@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\Observer\Blameable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -16,6 +17,7 @@ class ActiveOpportunityReminder extends Model
 
     protected $fillable = [
         'active_opportunity_id',
+        'user_id',
         'act_history_reminder',
         'act_history_other_name_reminder',
         'act_history_order_reminder',
@@ -24,4 +26,14 @@ class ActiveOpportunityReminder extends Model
         'created_by',
         'updated_by',
     ];
+
+    protected $dates = ['act_history_date_reminder', 'created_at', 'updated_at'];
+
+    /**
+     * @return BelongsTo
+     */
+    public function activeOpportunityData()
+    {
+        return $this->belongsTo(ActiveOpportunity::class, 'active_opportunity_id');
+    }
 }

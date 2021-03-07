@@ -16,6 +16,7 @@ class CreateActiveOpportunityRemindersTable extends Migration
         Schema::create('active_opportunity_reminders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('active_opportunity_id');
+            $table->bigInteger('user_id');
             $table->integer('act_history_reminder')->default(1);
             $table->string('act_history_other_name_reminder')->nullable();
             $table->string('act_history_order_reminder')->nullable();

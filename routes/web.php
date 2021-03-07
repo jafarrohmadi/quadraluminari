@@ -18,6 +18,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     Route::get('/', 'HomeController@index')->name('home');
         Route::post('/', 'HomeController@dataTable')->name('homePost');
+    Route::get('/reminder', 'HomeController@reminder')->name('reminder');
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::resource('permissions', 'PermissionsController');

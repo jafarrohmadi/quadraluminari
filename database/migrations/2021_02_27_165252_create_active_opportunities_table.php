@@ -28,7 +28,7 @@ class CreateActiveOpportunitiesTable extends Migration
             $table->string('opportunity_status')->nullable();
             $table->text('opportunity_status_remarks')->nullable();
             $table->boolean('reminder')->default(0);
-            $table->integer('status')->nullable();
+            $table->integer('status')->default(3);
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();
             $table->timestamps();

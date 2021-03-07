@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Mail\ReminderEmail;
 use App\Models\ActiveClient;
 use App\Models\ActiveOpportunity;
+use App\Models\ActiveOpportunityReminder;
 use App\Repositories\ActiveClientRepository;
+use App\Repositories\ActiveOpportunityReminderRepository;
 use App\Repositories\ActiveOpportunityRepository;
 use App\Repositories\CityRepository;
 use App\Repositories\ProvinceRepository;
+use App\Repositories\UserRepository;
+use http\Client\Curl\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\DataTables;
 use Gate;
@@ -18,21 +24,26 @@ class HomeController
     /**
      * @var ActiveClientRepository
      */
-    protected $activeOpportunityRepository, $province, $city;
+    protected $activeOpportunityRepository, $province, $city, $user, $activeOpportunityReminderRepository;
 
     /**
      * ActiveClientController constructor.
-     * @param ActiveClientRepository $activeClient
+     * @param ActiveOpportunityRepository $activeOpportunityRepository
      * @param ProvinceRepository $provinceRepository
      * @param CityRepository $cityRepository
+     * @param UserRepository $userRepository
+     * @param ActiveOpportunityReminderRepository $activeOpportunityReminderRepository
      */
     public function __construct(
         ActiveOpportunityRepository $activeOpportunityRepository, ProvinceRepository $provinceRepository,
-        CityRepository $cityRepository
+        CityRepository $cityRepository, UserRepository $userRepository,
+        ActiveOpportunityReminderRepository $activeOpportunityReminderRepository
     ) {
-        $this->activeOpportunityRepository = $activeOpportunityRepository;
-        $this->province                    = $provinceRepository;
-        $this->city                        = $cityRepository;
+        $this->activeOpportunityRepository         = $activeOpportunityRepository;
+        $this->province                            = $provinceRepository;
+        $this->city                                = $cityRepository;
+        $this->user                                = $userRepository;
+        $this->activeOpportunityReminderRepository = $activeOpportunityReminderRepository;
     }
 
     /**
@@ -52,7 +63,9 @@ class HomeController
      */
     public function dataTable(Request $request)
     {
-        $where = [];
+        $where           = [];
+        $where['status'] = ActiveOpportunity::STATUS_ON_PROGRESS;
+
         if ($request->date_start != null) {
             $where[] = ['act_history_date', '>=', $request->date_start];
         }
@@ -175,4 +188,24 @@ class HomeController
         return $table->make(true);
 
     }
+
+//    public function reminder()
+//    {
+//        $user = $this->user->findAllData([['id', '!=', 1]]);
+//
+//        foreach ($user as $users) {
+//            $data = $this->activeOpportunityReminderRepository->findAllData([
+//                'user_id'                   => $users->id,
+//                'act_history_date_reminder' => date('Y-m-d'),
+//            ], ['activeOpportunityData', 'activeOpportunityData.activeClientData']);
+//
+//            $email = explode(';', $users->email);
+//
+//            foreach ($email as $emails) {
+//                Mail::to($emails)->send(new ReminderEmail($data, $users->name));
+//            }
+//
+//        }
+//    }
 }
+
