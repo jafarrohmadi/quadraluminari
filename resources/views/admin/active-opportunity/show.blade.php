@@ -90,14 +90,7 @@
                                     {{ $activeOpportunity->project ?? '' }}
                                 </td>
                             </tr>
-                            <tr>
-                                <th>
-                                    Product Name
-                                </th>
-                                <td>
-                                    {{ $activeOpportunity->product_name ?? ''}}
-                                </td>
-                            </tr>
+
                             <tr>
                                 <th>
                                     PIC
@@ -151,7 +144,7 @@
                                     Opportunity Status
                                 </th>
                                 <td>
-                                    {{ $activeOpportunity->opportunity_status }}
+                                    {{ $activeOpportunity->opportunity_status }}%
                                 </td>
                             </tr>
                             <tr>
@@ -169,7 +162,68 @@
             </div>
         </div>
     </div>
+    <span class="contactPerson">
+        @foreach($activeOpportunity->projectDetailData as $key => $projectDetails)
+            <div class="card ">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Detail Project
+                        </div>
 
+                        <div class="text-right col-md-6"> <a
+                                href="{{url("admin/detail-project-history/$projectDetails->id")}}"
+                                class="btn btn-info"
+                                target="_blank"> History</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <table class="table table-bordered table-striped">
+                            <tbody>
+                            <tr>
+                                <th>
+                                    Produk
+                                </th>
+                                <td>
+                                    {{ $projectDetails->detail_name ?? '' }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    Qty
+                                </th>
+                                <td>
+                                    {{  $projectDetails->detail_qty ?? ''}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Total
+                                </th>
+                                <td>
+
+                                    {{  $projectDetails->detail_value ?? ''}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Notes
+                                </th>
+                                <td>
+
+                                    {{  $projectDetails->detail_notes ?? ''}}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </span>
     @include('admin.active-opportunity-history.index')
 
     <a class="btn btn-default" href="{{ route('admin.active-opportunity.index') }}">

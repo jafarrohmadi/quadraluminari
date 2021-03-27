@@ -16,17 +16,9 @@ class CreateActiveClientTable extends Migration
         Schema::create('active_client', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->text('npwp')->nullable();
             $table->text('remark')->nullable();
-            $table->string('contact_person_name')->nullable();
-            $table->string('contact_person_grade')->nullable();
-            $table->integer('contact_person_religion')->nullable();
-            $table->string('contact_person_province_id')->nullable();
-            $table->string('contact_person_city_id')->nullable();
-            $table->text('contact_person_address')->nullable();
-            $table->string('contact_person_photo')->nullable();
-            $table->string('contact_person_phone')->nullable();
-            $table->string('contact_person_mobile_phone')->nullable();
-            $table->text('contact_person_mobile_email')->nullable();
+            $table->text('phone_number')->nullable();
             $table->text('address_country')->nullable();
             $table->string('address_province_id')->nullable();
             $table->string('address_city_id')->nullable();

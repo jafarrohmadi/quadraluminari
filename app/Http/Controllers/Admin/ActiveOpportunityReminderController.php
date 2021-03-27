@@ -9,6 +9,8 @@ use App\Models\ActiveOpportunity;
 use App\Repositories\ActiveOpportunityHistoryRepository;
 use App\Repositories\ActiveOpportunityReminderRepository;
 use App\Repositories\ActiveOpportunityRepository;
+use App\Repositories\ProjectDetailHistoryRepository;
+use App\Repositories\ProjectDetailRepository;
 use App\Repositories\UserRepository;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -30,7 +32,7 @@ class ActiveOpportunityReminderController extends Controller
     /**
      * @var ActiveOpportunityRepository
      */
-    public $activeOpportunityRepository, $activeOpportunityHistoryRepository, $activeOpportunityReminderRepository, $user;
+    public $activeOpportunityRepository, $activeOpportunityHistoryRepository, $activeOpportunityReminderRepository, $user, $projectDetailRepository, $projectDetailHistoryRepository;
 
     /**
      * ActiveOpportunityController constructor.
@@ -43,12 +45,15 @@ class ActiveOpportunityReminderController extends Controller
         ActiveOpportunityRepository $activeOpportunityRepository,
         ActiveOpportunityHistoryRepository $activeOpportunityHistoryRepository,
         ActiveOpportunityReminderRepository $activeOpportunityReminderRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        ProjectDetailRepository $projectDetailRepository, ProjectDetailHistoryRepository $projectDetailHistoryRepository
     ) {
         $this->activeOpportunityRepository         = $activeOpportunityRepository;
         $this->activeOpportunityHistoryRepository  = $activeOpportunityHistoryRepository;
         $this->activeOpportunityReminderRepository = $activeOpportunityReminderRepository;
         $this->user                                = $userRepository;
+        $this->projectDetailRepository             = $projectDetailRepository;
+        $this->projectDetailHistoryRepository      = $projectDetailHistoryRepository;
     }
 
     /**
@@ -60,79 +65,29 @@ class ActiveOpportunityReminderController extends Controller
     {
         abort_if(Gate::denies('active_opportunity_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            if (me()->id == 1) {
-                $query = $this->activeOpportunityRepository->allQuery(['reminder' => 1,],
-                    ['activeClientData', 'userData']);
-            }
-            else {
-                $query = $this->activeOpportunityRepository->allQuery(['user_id' => me()->id, 'reminder' => 1],
-                    ['activeClientData', 'userData']);
-            }
-
-            $query = $query->join('active_opportunity_reminders', 'active_opportunities.id',
-                'active_opportunity_reminders.active_opportunity_id')
-                ->where('active_opportunity_reminders.id', function ($query) {
-                    $query->select('id')
-                        ->from('active_opportunity_reminders')
-                        ->whereColumn('active_opportunity_id', 'active_opportunities.id')
-                        ->latest()
-                        ->limit(1);
-                })->where('active_opportunity_reminders.act_history_date_reminder', '>=', date('Y-m-d'))
-                ->select('active_opportunities.*',
-                    'active_opportunity_reminders.act_history_date_reminder',
-                    'active_opportunity_reminders.act_history_order_reminder');
-
-            $table = Datatables::of($query);
-            $table->addColumn('placeholder', ' ');
-            $table->addColumn('actions', '&nbsp;');
-
-            $table->editColumn('active_client_id', function ($row) {
-                return $row->activeClientData->name ?? '';
-            });
-
-            $table->editColumn('user_id', function ($row) {
-                return $row->userData->name ?? '';
-            });
-
-            $table->editColumn('act_history', function ($row) {
-                return $row->act_history !=
-                       \App\Models\ActiveOpportunity::ACT_HISTORY_OTHER ? (new ActiveOpportunity)->getActHistory($row->act_history) : $row->act_history_other_name;
-            });
-
-            $table->editColumn('value', function ($row) {
-                return (new ActiveOpportunity)->getCurrency($row->value_currency) . ' ' .
-                       number_format($row->value, 2, ',', '.');
-            });
-
-            $table->editColumn('act_history_date_reminder', function ($row) {
-                return $row->activeOpportunityHistoryReminderData->last()->act_history_date_reminder ?? '';
-            });
-
-            $table->editColumn('act_history_order_reminder', function ($row) {
-                return $row->activeOpportunityHistoryReminderData->last()->act_history_order_reminder ?? '';
-            });
-
-            $table->editColumn('actions', function ($row) {
-                $viewGate      = 'active_opportunity_view';
-                $editGate      = 'active_opportunity_edit';
-                $deleteGate    = 'active_opportunity_delete_delete';
-                $crudRoutePart = 'active-opportunity-reminder';
-                return view('partials.datatablesActions', compact(
-                        'viewGate',
-                        'editGate',
-                        'deleteGate',
-                        'crudRoutePart',
-                        'row'
-                    )
-                );
-            }
-            );
-
-            return $table->make(true);
+        if (me()->id == 1) {
+            $query = $this->activeOpportunityRepository->allQuery(['reminder' => 1,],
+                ['activeClientData', 'userData']);
+        }
+        else {
+            $query = $this->activeOpportunityRepository->allQuery(['user_id' => me()->id, 'reminder' => 1],
+                ['activeClientData', 'userData']);
         }
 
-        return view('admin.active-opportunity-reminder.index');
+        $query = $query->join('active_opportunity_reminders', 'active_opportunities.id',
+            'active_opportunity_reminders.active_opportunity_id')
+            ->where('active_opportunity_reminders.id', function ($query) {
+                $query->select('id')
+                    ->from('active_opportunity_reminders')
+                    ->whereColumn('active_opportunity_id', 'active_opportunities.id')
+                    ->latest()
+                    ->limit(1);
+            })->where('active_opportunity_reminders.act_history_date_reminder', '>=', date('Y-m-d'))
+            ->select('active_opportunities.*',
+                'active_opportunity_reminders.act_history_date_reminder',
+                'active_opportunity_reminders.act_history_order_reminder')->get();
+
+        return view('admin.active-opportunity-reminder.index', compact('query'));
     }
 
     /**
@@ -160,7 +115,10 @@ class ActiveOpportunityReminderController extends Controller
 
         $user              = $this->user->findAllData([['id', '!=', 1]]);
         $activeOpportunity = $this->activeOpportunityRepository->findData(['id' => $id],
-            ['userData', 'activeClientData', 'activeOpportunityHistoryData', 'activeOpportunityHistoryReminderData']);
+            [
+                'userData', 'activeClientData', 'activeOpportunityHistoryData', 'activeOpportunityHistoryReminderData',
+                'projectDetailData',
+            ]);
 
         return view('admin.active-opportunity-reminder.edit', compact('user', 'activeOpportunity'));
     }
@@ -169,8 +127,10 @@ class ActiveOpportunityReminderController extends Controller
     {
         DB::beginTransaction();
         try {
-            $input       = $request->except('_method', '_token', 'act_history_reminder', 'act_history_date_reminder',
-                'act_history_other_name_reminder', 'act_history_order_reminder', 'act_history_notes_reminder');
+            $input = $request->except('_method', '_token', 'act_history_reminder', 'act_history_date_reminder',
+                'act_history_other_name_reminder', 'act_history_order_reminder', 'act_history_notes_reminder',
+                'detail_id', 'detail_name', 'detail_qty', 'detail_value', 'detail_notes');
+
             $opportunity = $this->activeOpportunityRepository->updateData($input, ['id' => $id]);
 
             if ($request->act_history_date != $opportunity->activeOpportunityHistoryData->first()->act_history_date ||
@@ -179,13 +139,12 @@ class ActiveOpportunityReminderController extends Controller
                 $request->act_history_remarks !=
                 $opportunity->activeOpportunityHistoryData->first()->act_history_remarks
                 || $request->user_id != $opportunity->activeOpportunityHistoryData->first()->user_id ||
-                $request->product_name != $opportunity->activeOpportunityHistoryData->first()->product_name ||
                 $request->act_history != $opportunity->activeOpportunityHistoryData->first()->act_history ||
                 $request->act_history_other_name !=
                 $opportunity->activeOpportunityHistoryData->first()->act_history_other_name ||
                 $request->opportunity_status_remarks !=
-                $opportunity->activeOpportunityHistoryData->first()->opportunity_status_remarks ||
-                $request->status != $opportunity->activeOpportunityHistoryData->first()->status
+                $opportunity->activeOpportunityHistoryData->first()->opportunity_status_remarks
+                || $request->status != $opportunity->activeOpportunityHistoryData->first()->status
 
             ) {
                 $input                          = $request->all();
@@ -207,6 +166,26 @@ class ActiveOpportunityReminderController extends Controller
                 $input                          = $request->all();
                 $input['active_opportunity_id'] = $id;
                 $this->activeOpportunityReminderRepository->createData($input);
+            }
+
+            foreach ($request->detail_name as $key => $value) {
+                $detailProject = $opportunity->projectDetailData->where('id', $request->detail_id[$key])->first();
+                if ($request->detail_qty[$key] != $detailProject->detail_qty ||
+                    $request->detail_notes[$key] != $detailProject->detail_notes ||
+                    $request->detail_value[$key] != $detailProject->detail_value ||
+                    $value != $detailProject->detail_name
+                ) {
+                    $data['active_opportunity_id'] = $opportunity->id;
+                    $data['detail_name']           = $value;
+                    $data['detail_qty']            = $request->detail_qty[$key];
+                    $data['detail_notes']          = $request->detail_notes[$key];
+                    $data['detail_value']          = $request->detail_value[$key];
+
+                    $detail                    = $this->projectDetailRepository->updateData($data,
+                        ['id' => $request->detail_id[$key]]);
+                    $data['project_detail_id'] = $detail->id;
+                    $this->projectDetailHistoryRepository->createData($data);
+                }
             }
 
         } catch (Exception $e) {

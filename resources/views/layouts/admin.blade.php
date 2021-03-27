@@ -9,6 +9,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ trans('panel.site_title') }}</title>
+    <?php use Illuminate\Support\Facades\Cache; Cache::rememberForever('css', function() { ?>
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"/>
     <link href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" rel="stylesheet"/>
@@ -24,6 +26,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet"/>
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet"/>
+    <?php });?>
     @yield('styles')
     <style>
         .switch-field {
@@ -69,7 +72,27 @@
         .switch-field label:last-of-type {
             border-radius: 0 4px 4px 0;
         }
+        a.buttons-columnVisibility {
+            cursor:pointer;
+        }
+        a.buttons-columnVisibility.active {
+            background-color:transparent;
+            color:inherit;
+        }
+        a.buttons-columnVisibility.active:hover {
+            background-color:#f5f5f5;
+            color:inherit;
+        }
+        a.buttons-columnVisibility:before {
+            width:25px;
 
+            content:"\e013";
+            color:transparent;
+            padding-right:10px;
+        }
+        a.buttons-columnVisibility.active:before {
+            color:inherit;
+        }
     </style>
 </head>
 
@@ -140,6 +163,7 @@
         {{ csrf_field() }}
     </form>
 </div>
+<?php Cache::rememberForever('js', function() { ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -162,6 +186,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
 <script src="{{ asset('js/main.js') }}"></script>
+<?php });?>
 <script>
     $(function () {
         let copyButtonTrans   = '{{ trans('global.datatables.copy') }}'

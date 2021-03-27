@@ -18,7 +18,6 @@ class CreateActiveOpportunitiesTable extends Migration
             $table->bigInteger('active_client_id');
             $table->bigInteger('user_id');
             $table->string('project')->nullable();
-            $table->string('product_name')->nullable();
             $table->integer('value_currency')->nullable();
             $table->string('value')->nullable();
             $table->integer('act_history')->default(1);
@@ -31,6 +30,8 @@ class CreateActiveOpportunitiesTable extends Migration
             $table->integer('status')->default(3);
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -35,18 +35,6 @@
                 @method('PUT')
                 @csrf
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label class="required" for="name">Product Name</label>
-                        <input class="form-control {{ $errors->has('product_name') ? 'is-invalid' : '' }}"
-                               type="text" name="product_name"
-                               id="product_name" value="{{ old('product_name', $row->product_name) }}"
-                               disabled>
-                        @if($errors->has('product_name'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('product_name') }}
-                            </div>
-                        @endif
-                    </div>
 
                     <div class="row">
                         <div class="col-md-6">

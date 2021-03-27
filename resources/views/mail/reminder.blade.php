@@ -36,7 +36,7 @@
                     <td style="height:40px;">&nbsp;</td>
                 </tr>
                 <!-- Email Content -->
-                @foreach($data as $datas)
+                @foreach($data as $key => $datas)
                 <tr>
                     <td>
 
@@ -50,7 +50,7 @@
                             <!-- Title -->
                             <tr>
                                 <td style="padding:0 15px; text-align:center;">
-                                    <h1 style="color:#1e1e2d; font-weight:400; margin:0;font-size:32px;font-family:'Rubik',sans-serif;">Act Reminder : {{ $datas->id }} </h1>
+                                    <h1 style="color:#1e1e2d; font-weight:400; margin:0;font-size:32px;font-family:'Rubik',sans-serif;">Act Reminder : {{ $key + 1 }} </h1>
                                     <span style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece;
                                         width:100px;"></span>
                                 </td>
@@ -68,14 +68,6 @@
                                                 </td>
                                                 <td style="padding: 10px; border-bottom: 1px solid #ededed; color: #455056;">
                                                     {{ $datas->activeOpportunityData->activeClientData->name }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 10px; border-bottom: 1px solid #ededed; border-right: 1px solid #ededed; width: 35%; font-weight:500; color:rgba(0,0,0,.64)">
-                                                    Product Name :
-                                                </td>
-                                                <td style="padding: 10px; border-bottom: 1px solid #ededed; color: #455056;">
-                                                    {{ $datas->activeOpportunityData->product_name }}
                                                 </td>
                                             </tr>
                                             <tr>

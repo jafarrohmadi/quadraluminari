@@ -6,9 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyActiveClientRequest;
 use App\Models\ActiveClient;
 use App\Models\ActiveOpportunity;
+use App\Models\ProjectDetail;
+use App\Models\ProjectDetailHistory;
+use App\Repositories\ActiveClientRepository;
 use App\Repositories\ActiveOpportunityHistoryRepository;
 use App\Repositories\ActiveOpportunityReminderRepository;
 use App\Repositories\ActiveOpportunityRepository;
+use App\Repositories\ProjectDetailHistoryRepository;
+use App\Repositories\ProjectDetailRepository;
 use App\Repositories\UserRepository;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -30,7 +35,8 @@ class ActiveOpportunityController extends Controller
     /**
      * @var ActiveOpportunityRepository
      */
-    public $activeOpportunityRepository, $activeOpportunityHistoryRepository, $activeOpportunityReminderRepository, $user;
+    public $activeOpportunityRepository, $activeOpportunityHistoryRepository, $activeOpportunityReminderRepository, $user, $activeClientRepository,
+        $projectDetailRepository, $projectDetailHistoryRepository;
 
     /**
      * ActiveOpportunityController constructor.
@@ -38,17 +44,24 @@ class ActiveOpportunityController extends Controller
      * @param ActiveOpportunityHistoryRepository $activeOpportunityHistoryRepository
      * @param ActiveOpportunityReminderRepository $activeOpportunityReminderRepository
      * @param UserRepository $userRepository
+     * @param ActiveClientRepository $activeClientRepository
+     * @param ProjectDetail $projectDetail
+     * @param ProjectDetailHistory $projectDetailHistory
      */
     public function __construct(
         ActiveOpportunityRepository $activeOpportunityRepository,
         ActiveOpportunityHistoryRepository $activeOpportunityHistoryRepository,
         ActiveOpportunityReminderRepository $activeOpportunityReminderRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository, ActiveClientRepository $activeClientRepository,
+        ProjectDetailRepository $projectDetailRepository, ProjectDetailHistoryRepository $projectDetailHistoryRepository
     ) {
         $this->activeOpportunityRepository         = $activeOpportunityRepository;
         $this->activeOpportunityHistoryRepository  = $activeOpportunityHistoryRepository;
         $this->activeOpportunityReminderRepository = $activeOpportunityReminderRepository;
         $this->user                                = $userRepository;
+        $this->activeClientRepository              = $activeClientRepository;
+        $this->projectDetailRepository             = $projectDetailRepository;
+        $this->projectDetailHistoryRepository      = $projectDetailHistoryRepository;
     }
 
     /**
@@ -60,57 +73,15 @@ class ActiveOpportunityController extends Controller
     {
         abort_if(Gate::denies('active_opportunity_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            if (me()->id == 1) {
-                $query = $this->activeOpportunityRepository->allQuery([], ['activeClientData', 'userData']);
-            }
-            else {
-                $query = $this->activeOpportunityRepository->allQuery(['user_id' => me()->id],
-                    ['activeClientData', 'userData']);
-            }
-
-            $table = Datatables::of($query);
-            $table->addColumn('placeholder', ' ');
-            $table->addColumn('actions', '&nbsp;');
-
-            $table->editColumn('active_client_id', function ($row) {
-                return $row->activeClientData->name ?? '';
-            });
-
-            $table->editColumn('user_id', function ($row) {
-                return $row->userData->name ?? '';
-            });
-
-            $table->editColumn('act_history', function ($row) {
-                return $row->act_history !=
-                       \App\Models\ActiveOpportunity::ACT_HISTORY_OTHER ? (new ActiveOpportunity)->getActHistory($row->act_history) : $row->act_history_other_name;
-            });
-
-            $table->editColumn('value', function ($row) {
-                return (new ActiveOpportunity)->getCurrency($row->value_currency) . ' ' .
-                       number_format($row->value, 2, ',', '.');
-            });
-
-            $table->editColumn('actions', function ($row) {
-                $viewGate      = 'active_opportunity_view';
-                $editGate      = 'active_opportunity_edit';
-                $deleteGate    = 'active_opportunity_delete';
-                $crudRoutePart = 'active-opportunity';
-                return view('partials.datatablesActions', compact(
-                        'viewGate',
-                        'editGate',
-                        'deleteGate',
-                        'crudRoutePart',
-                        'row'
-                    )
-                );
-            }
-            );
-
-            return $table->make(true);
+        if (me()->id == 1) {
+            $query = $this->activeOpportunityRepository->findAllData([], ['activeClientData', 'userData']);
+        }
+        else {
+            $query = $this->activeOpportunityRepository->findAllData(['user_id' => me()->id],
+                ['activeClientData', 'userData']);
         }
 
-        return view('admin.active-opportunity.index');
+        return view('admin.active-opportunity.index', compact('query'));
     }
 
     /**
@@ -139,6 +110,24 @@ class ActiveOpportunityController extends Controller
             $this->activeOpportunityHistoryRepository->createData($input);
 
             $this->activeOpportunityReminderRepository->createData($input);
+
+            $this->activeClientRepository->updateData(['status' => ActiveClient::Status_Active],
+                ['id' => $request->active_client_id]);
+
+            foreach ($request->detail_name as $key => $value) {
+                $data['active_opportunity_id'] = $opportunity->id;
+                $data['detail_name']           = $value;
+                $data['detail_qty']            = $request->detail_qty[$key];
+                $data['detail_notes']          = $request->detail_notes[$key];
+                $data['detail_value']          = $request->detail_value[$key];
+
+                if ($request->detail_qty[$key] ||
+                    $request->detail_notes[$key] || $value) {
+                    $detail                    = $this->projectDetailRepository->createData($data);
+                    $data['project_detail_id'] = $detail->id;
+                    $this->projectDetailHistoryRepository->createData($data);
+                }
+            }
         } catch (Exception $e) {
             DB::rollBack();
         }
@@ -174,17 +163,27 @@ class ActiveOpportunityController extends Controller
 
         $user              = $this->user->findAllData([['id', '!=', 1]]);
         $activeOpportunity = $this->activeOpportunityRepository->findData(['id' => $id],
-            ['userData', 'activeClientData', 'activeOpportunityHistoryData', 'activeOpportunityHistoryReminderData']);
+            [
+                'userData', 'activeClientData', 'activeOpportunityHistoryData', 'activeOpportunityHistoryReminderData',
+                'projectDetailData',
+            ]);
 
         return view('admin.active-opportunity.edit', compact('user', 'activeOpportunity'));
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return RedirectResponse
+     */
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
         try {
-            $input       = $request->except('_method', '_token', 'act_history_reminder', 'act_history_date_reminder',
-                'act_history_other_name_reminder', 'act_history_order_reminder', 'act_history_notes_reminder');
+            $input = $request->except('_method', '_token', 'act_history_reminder', 'act_history_date_reminder',
+                'act_history_other_name_reminder', 'act_history_order_reminder', 'act_history_notes_reminder',
+                'detail_id', 'detail_name', 'detail_qty', 'detail_value', 'detail_notes');
+
             $opportunity = $this->activeOpportunityRepository->updateData($input, ['id' => $id]);
 
             if ($request->act_history_date != $opportunity->activeOpportunityHistoryData->first()->act_history_date ||
@@ -193,7 +192,6 @@ class ActiveOpportunityController extends Controller
                 $request->act_history_remarks !=
                 $opportunity->activeOpportunityHistoryData->first()->act_history_remarks
                 || $request->user_id != $opportunity->activeOpportunityHistoryData->first()->user_id ||
-                $request->product_name != $opportunity->activeOpportunityHistoryData->first()->product_name ||
                 $request->act_history != $opportunity->activeOpportunityHistoryData->first()->act_history ||
                 $request->act_history_other_name !=
                 $opportunity->activeOpportunityHistoryData->first()->act_history_other_name ||
@@ -223,8 +221,29 @@ class ActiveOpportunityController extends Controller
                 $this->activeOpportunityReminderRepository->createData($input);
             }
 
+            foreach ($request->detail_name as $key => $value) {
+                $detailProject = $opportunity->projectDetailData->where('id', $request->detail_id[$key])->first();
+                if ($request->detail_qty[$key] != $detailProject->detail_qty ||
+                    $request->detail_notes[$key] != $detailProject->detail_notes ||
+                    $request->detail_value[$key] != $detailProject->detail_value ||
+                    $value != $detailProject->detail_name
+                ) {
+                    $data['active_opportunity_id'] = $opportunity->id;
+                    $data['detail_name']           = $value;
+                    $data['detail_qty']            = $request->detail_qty[$key];
+                    $data['detail_notes']          = $request->detail_notes[$key];
+                    $data['detail_value']          = $request->detail_value[$key];
+
+                    $detail                    = $this->projectDetailRepository->updateData($data,
+                        ['id' => $request->detail_id[$key]]);
+                    $data['project_detail_id'] = $detail->id;
+                    $this->projectDetailHistoryRepository->createData($data);
+                }
+            }
+
         } catch (Exception $e) {
             DB::rollBack();
+
         }
 
         DB::commit();

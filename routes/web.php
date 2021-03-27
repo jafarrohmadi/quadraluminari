@@ -17,7 +17,7 @@ Auth::routes();
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
 
     Route::get('/', 'HomeController@index')->name('home');
-        Route::post('/', 'HomeController@dataTable')->name('homePost');
+    Route::post('/', 'HomeController@index')->name('homePost');
     Route::get('/reminder', 'HomeController@reminder')->name('reminder');
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
@@ -36,11 +36,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     Route::resource('active-opportunity-reminder', 'ActiveOpportunityReminderController');
 
-    Route::get('get-active-opportunity-history/{id}', 'ActiveOpportunityHistoryController@index')->name('get-active-opportunity-history.index');
+    Route::get('get-active-opportunity-history/{id}',
+        'ActiveOpportunityHistoryController@index')->name('get-active-opportunity-history.index');
     Route::resource('active-opportunity-history', 'ActiveOpportunityHistoryController');
 
+
+    Route::get('import', 'ActiveClientController@import')->name('import');
 
     Route::get('get-active-client', 'GetActiveClientController@index')->name('get-active-client.index');
 
     Route::get('getCityByProvinceId/{id}', 'CityController@getCityByProvinceId');
+
+    Route::get('detail-project-history/{id}', 'ProjectDetailHistoryController@index');
 });

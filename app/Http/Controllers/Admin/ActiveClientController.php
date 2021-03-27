@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyActiveClientRequest;
 use App\Http\Requests\StoreActiveClientRequest;
 use App\Http\Requests\UpdateActiveClientRequest;
+use App\Imports\ActiveClientImport;
 use App\Models\ActiveClient;
 use App\Repositories\ActiveClientRepository;
 use App\Repositories\CityRepository;
+use App\Repositories\ContactPersonRepository;
 use App\Repositories\ProvinceRepository;
 use Gate;
 use Illuminate\Contracts\Foundation\Application;
@@ -16,6 +18,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\DataTables;
 
@@ -24,20 +27,23 @@ class  ActiveClientController extends Controller
     /**
      * @var ActiveClientRepository
      */
-    protected $activeClient, $province, $city;
+    protected $activeClient, $province, $city, $contactPersonRepository;
 
     /**
      * ActiveClientController constructor.
      * @param ActiveClientRepository $activeClient
      * @param ProvinceRepository $provinceRepository
      * @param CityRepository $cityRepository
+     * @param ContactPersonRepository $contactPersonRepository
      */
     public function __construct(
-        ActiveClientRepository $activeClient, ProvinceRepository $provinceRepository, CityRepository $cityRepository
+        ActiveClientRepository $activeClient, ProvinceRepository $provinceRepository, CityRepository $cityRepository,
+        ContactPersonRepository $contactPersonRepository
     ) {
-        $this->activeClient = $activeClient;
-        $this->province     = $provinceRepository;
-        $this->city         = $cityRepository;
+        $this->activeClient            = $activeClient;
+        $this->province                = $provinceRepository;
+        $this->city                    = $cityRepository;
+        $this->contactPersonRepository = $contactPersonRepository;
     }
 
     /**
@@ -49,56 +55,9 @@ class  ActiveClientController extends Controller
     {
         abort_if(Gate::denies('active_client_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            $query = $this->activeClient->allQuery([], ['addressCityData']);
+        $query = $this->activeClient->findAllData([], ['addressCityData']);
 
-            $table = Datatables::of($query);
-            $table->addColumn('placeholder', ' ');
-            $table->addColumn('actions', '&nbsp;');
-
-            $table->editColumn('status', function ($row) {
-                return (new ActiveClient)->getStatus($row->status);
-            });
-
-            $table->editColumn('address_city_id', function ($row) {
-                return $row->addressCityData->name ?? '';
-            });
-
-            $table->editColumn('contact_person_mobile_email', function ($row) {
-                $data = [];
-                if (isset($row->contact_person_mobile_email)) {
-                    $explode = explode(";",$row->contact_person_mobile_email);
-
-                    foreach ( $explode as $email) {
-                        $data [] = sprintf('<span class="badge badge-info">%s</span>', $email);
-                    }
-                }
-
-                return $data ? implode(" ", $data) : '';
-            });
-
-            $table->editColumn('actions', function ($row) {
-                $viewGate      = 'active_client_view';
-                $editGate      = 'active_client_edit';
-                $deleteGate    = 'active_client_delete';
-                $crudRoutePart = 'active-client';
-                return view('partials.datatablesActions', compact(
-                        'viewGate',
-                        'editGate',
-                        'deleteGate',
-                        'crudRoutePart',
-                        'row'
-                    )
-                );
-            }
-            );
-
-            $table->rawColumns(['actions', 'placeholder', 'contact_person_mobile_email']);
-
-            return $table->make(true);
-        }
-
-        return view('admin.active-client.index');
+        return view('admin.active-client.index', compact('query'));
 
     }
 
@@ -121,9 +80,25 @@ class  ActiveClientController extends Controller
         DB::beginTransaction();
 
         try {
-            $this->activeClient->createData($storeActiveClientRequest->all());
+            $active = $this->activeClient->createData($storeActiveClientRequest->all());
+            foreach ($storeActiveClientRequest->contact_person_name as $key => $value) {
+                $data['active_client_id']            = $active->id;
+                $data['contact_person_name']         = $value;
+                $data['contact_person_grade']        = $storeActiveClientRequest->contact_person_grade[$key];
+                $data['contact_person_phone']        = $storeActiveClientRequest->contact_person_phone[$key];
+                $data['contact_person_mobile_phone'] = $storeActiveClientRequest->contact_person_mobile_phone[$key];
+                $data['contact_person_mobile_email'] = $storeActiveClientRequest->contact_person_mobile_email[$key];
+
+                if ($storeActiveClientRequest->contact_person_grade[$key] ||
+                    $storeActiveClientRequest->contact_person_phone[$key] ||
+                    $storeActiveClientRequest->contact_person_mobile_phone[$key]
+                    || $storeActiveClientRequest->contact_person_mobile_email[$key] || $value) {
+                    $this->contactPersonRepository->createData($data);
+                }
+            }
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e->getMessage());
         }
 
         DB::commit();
@@ -137,7 +112,7 @@ class  ActiveClientController extends Controller
      */
     public function show($id)
     {
-        $activeClient = $this->activeClient->findData(['id' => $id]);
+        $activeClient = $this->activeClient->findData(['id' => $id], ['contactPersonData']);
 
         return view('admin.active-client.show', compact('activeClient'));
     }
@@ -148,7 +123,7 @@ class  ActiveClientController extends Controller
      */
     public function edit($id)
     {
-        $activeClient = $this->activeClient->findData(['id' => $id]);
+        $activeClient = $this->activeClient->findData(['id' => $id], ['contactPersonData']);
 
         $province          = $this->province->findAllData();
         $cityContactPerson = $this->city->findAllData(['province_id' => $activeClient->contact_person_province_id]);
@@ -167,9 +142,29 @@ class  ActiveClientController extends Controller
         DB::beginTransaction();
 
         try {
-            $this->activeClient->updateData($updateActiveClientRequest->except('_method', '_token'), ['id' => $id]);
+            $active = $this->activeClient->updateData($updateActiveClientRequest->except('_method', '_token', 'active_client_id', 'contact_person_name', 'contact_person_phone',
+            'contact_person_mobile_phone', 'contact_person_mobile_email', 'contact_person_grade'),
+                ['id' => $id]);
+            $this->contactPersonRepository->deleteData(['active_client_id' => $active->id]);
+
+            foreach ($updateActiveClientRequest->contact_person_name as $key => $value) {
+                $data['active_client_id']            = $active->id;
+                $data['contact_person_name']         = $value;
+                $data['contact_person_grade']        = $updateActiveClientRequest->contact_person_grade[$key];
+                $data['contact_person_phone']        = $updateActiveClientRequest->contact_person_phone[$key];
+                $data['contact_person_mobile_phone'] = $updateActiveClientRequest->contact_person_mobile_phone[$key];
+                $data['contact_person_mobile_email'] = $updateActiveClientRequest->contact_person_mobile_email[$key];
+
+                if ($updateActiveClientRequest->contact_person_grade[$key] ||
+                    $updateActiveClientRequest->contact_person_phone[$key] ||
+                    $updateActiveClientRequest->contact_person_mobile_phone[$key]
+                    || $updateActiveClientRequest->contact_person_mobile_email[$key] || $value) {
+                    $this->contactPersonRepository->createData($data);
+                }
+            }
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e->getMessage());
         }
 
         DB::commit();
@@ -214,5 +209,12 @@ class  ActiveClientController extends Controller
 
         DB::commit();
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function import()
+    {
+        Excel::import(new ActiveClientImport, public_path('excel.xlsx'));
+
+        return redirect('/')->with('success', 'All good!');
     }
 }

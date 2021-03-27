@@ -103,17 +103,29 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="form-group">
-                            <label class="required" for="name">Product Name</label>
-                            <input class="form-control {{ $errors->has('product_name') ? 'is-invalid' : '' }}"
-                                   type="text" name="product_name"
-                                   id="product_name" value="{{ old('product_name', $activeOpportunity->product_name) }}"
-                                   required>
-                            @if($errors->has('product_name'))
-                                <div class="invalid-feedback">
-                                    {{ $errors->first('product_name') }}
+                        <div class="form-group ">
+
+                            <label class="" for="name">Start Date</label>
+                            <div class="input-group">
+                                <input type="text" id="start_date" name="start_date"
+                                       class="form-control date"
+                                       value="{{ old('start_date', $activeOpportunity->start_date) }}" disabled>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                 </div>
-                            @endif
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="" for="name">End Date</label>
+                            <div class="input-group">
+                                <input type="text" id="end_date" name="end_date"
+                                       class="form-control date"
+                                       value="{{ old('end_date', $activeOpportunity->end_date) }}">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -230,10 +242,15 @@
 
                         <div class="form-group">
                             <label class="" for="name">Opportunity Status</label>
-                            <input class="form-control {{ $errors->has('opportunity_status') ? 'is-invalid' : '' }}"
-                                   id="opportunity_status"
-                                   name="opportunity_status"
-                                   value="{{ old('opportunity_status', $activeOpportunity->opportunity_status) }}">
+                            <select name="opportunity_status" id="opportunity_status"
+                                    class="form-control {{ $errors->has('opportunity_status') ? 'is-invalid' : '' }}">
+                                @for($i = 0; $i <=10; $i++)
+                                    <option value="{{ $i*10 }}"
+                                            @if($activeOpportunity->opportunity_status == $i*10) selected @endif>{{ $i*10 }}
+                                        %
+                                    </option>
+                                @endfor
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -247,6 +264,85 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <span class="contactPerson">
+                            @foreach($activeOpportunity->projectDetailData as $key => $projectDetails)
+                <input type="hidden" name="detail_id[{{$key}}]" value="{{$projectDetails->id}}">
+                <div class="card ">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Detail Project
+                            </div>
+
+                            <div class="text-right col-md-6"> <a
+                                    href="{{url("admin/detail-project-history/$projectDetails->id")}}"
+                                    class="btn btn-info"
+                                    target="_blank"> History</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="" for="name">Produk</label>
+                            <textarea class="form-control {{ $errors->has('detail_name[$key]') ? 'is-invalid' : '' }}"
+                                      id="detail_name[{{$key}}]"
+                                      name="detail_name[{{$key}}]"
+                                      required>{{ old('detail_name[0]', $projectDetails->detail_name) }}</textarea>
+                            @if($errors->has('detail_name[$key]'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('detail_name[$key]') }}
+                                </div>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label class="" for="name">Qty</label>
+                            <input
+                                class="form-control {{ $errors->has('detail_qty[$key]') ? 'is-invalid' : '' }}"
+                                type="number" name="detail_qty[{{$key}}]"
+                                id="detail_qty[{{$key}}]"
+                                value="{{ old('detail_qty[$key]', $projectDetails->detail_qty) }}">
+                            @if($errors->has('detail_qty[$key]'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('detail_qty[$key]') }}
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="form-group">
+                            <label class="" for="name">Total</label>
+                            <input
+                                class="form-control {{ $errors->has('detail_value[$key]') ? 'is-invalid' : '' }}"
+                                type="number" name="detail_value[{{$key}}]"
+                                id="detail_value[{{$key}}]"
+                                value="{{ old('detail_value[$key]', $projectDetails->detail_value) }}">
+                            @if($errors->has('detail_value[$key]'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('detail_value[$key]') }}
+                                </div>
+                            @endif
+                        </div>
+                           <div class="form-group">
+                            <label class="" for="name">Notes</label>
+                                  <textarea
+                                      class="form-control {{ $errors->has('detail_notes[$key]') ? 'is-invalid' : '' }}"
+                                      id="detail_notes[{{$key}}]"
+                                      name="detail_notes[{{$key}}]">{{ old('detail_notes[$key]', $projectDetails->detail_notes) }}</textarea>
+                            @if($errors->has('detail_notes[$key]'))
+                                   <div class="invalid-feedback">
+                                    {{ $errors->first('detail_notes[$key]') }}
+                                </div>
+                               @endif
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+                    </span>
+        <span class="contactPersonData"></span>
+        <div class="form-group">
+            <button class="btn btn-info" type="button" id="addContactPerson">
+                Add Detail Project
+            </button>
         </div>
         <div class="card">
             <div class="card-header">
@@ -335,6 +431,23 @@
                               name="act_history_notes_reminder">{!! old('act_history_notes_reminder', $activeOpportunity->activeOpportunityHistoryReminderData->last()->act_history_notes_reminder) !!}</textarea>
                 </div>
                 <div class="form-group">
+                    <label class="" for="name">Status</label>
+                    <div class="switch-field">
+                        <input type="radio" id="radio-three" name="status"
+                               value="{{\App\Models\ActiveOpportunity::STATUS_ON_PROGRESS}}" checked/>
+                        <label for="radio-three">On Progress </label>
+                        <input type="radio" id="radio-four" name="status"
+                               value="{{\App\Models\ActiveOpportunity::STATUS_SUCCESS}}"
+                               @if($activeOpportunity->status == \App\Models\ActiveOpportunity::STATUS_SUCCESS) checked @endif/>
+                        <label for="radio-four">Finish </label>
+                        <input type="radio" id="radio-five" name="status"
+                               value="{{\App\Models\ActiveOpportunity::STATUS_FAILED}}"
+                               @if($activeOpportunity->status == \App\Models\ActiveOpportunity::STATUS_FAILED) checked @endif/>
+                        <label for="radio-five">Failed</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <button class="btn btn-danger" type="submit">
                         {{ trans('global.update') }}
                     </button>
@@ -407,5 +520,19 @@
                 $('.act_history_other_name_reminder').addClass('d-none')
             }
         })
+
+        var i = "{{ count($activeOpportunity->projectDetailData) }}"
+        $('#addContactPerson').click(function (e) {
+            var newaddress = $('.contactPerson .card').eq(0).clone()
+            newaddress.find('input').val('')
+            newaddress.find('input').each(function () {
+                this.name = this.name.replace('[0]', '[' + i + ']')
+                this.id   = this.id.replace('[0]', '[' + i + ']')
+            })
+            i++
+
+            $('.contactPersonData').append(newaddress)
+        })
     </script>
 @endsection
+

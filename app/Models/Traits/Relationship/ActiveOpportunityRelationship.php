@@ -5,6 +5,7 @@ namespace App\Models\Traits\Relationship;
 use App\Models\ActiveClient;
 use App\Models\ActiveOpportunityHistory;
 use App\Models\ActiveOpportunityReminder;
+use App\Models\ProjectDetail;
 use App\Models\User;
 
 trait ActiveOpportunityRelationship
@@ -39,5 +40,13 @@ trait ActiveOpportunityRelationship
     public function activeClientData()
     {
         return $this->belongsTo(ActiveClient::class , 'active_client_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function projectDetailData()
+    {
+        return $this->hasMany(ProjectDetail::class , 'active_opportunity_id');
     }
 }

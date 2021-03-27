@@ -3,6 +3,7 @@
 namespace App\Models\Traits\Relationship;
 
 use App\Models\City;
+use App\Models\ContactPerson;
 use App\Models\Province;
 
 /**
@@ -41,6 +42,14 @@ trait ActiveClientRelationship
     public function addressCityData()
     {
         return $this->belongsTo(City::class, 'address_city_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function contactPersonData()
+    {
+        return $this->hasMany(ContactPerson::class, 'active_client_id', 'id');
     }
 }
 

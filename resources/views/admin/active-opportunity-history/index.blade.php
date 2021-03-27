@@ -14,9 +14,6 @@
                     Updated At
                 </th>
                 <th>
-                    Product Name
-                </th>
-                <th>
                     Company Name
                 </th>
                 <th>
@@ -68,7 +65,6 @@
                 columns: [
                     { data: 'placeholder', name: 'placeholder' },
                     { data: 'updated_at', name: 'updated_at' },
-                    { data: 'product_name', name: 'product_name' },
                     { data: 'active_client_id', name: 'active_client_id' },
                     { data: 'act_history_date', name: 'act_history_date' },
                     { data: 'act_history', name: 'act_history' },

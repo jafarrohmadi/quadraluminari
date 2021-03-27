@@ -72,6 +72,10 @@ class ActiveOpportunityHistoryController extends Controller
             return (new ActiveOpportunity)->getStatus($row->status)?? '';
         });
 
+        $table->editColumn('opportunity_status', function ($row) {
+            return $row->opportunity_status . '%' ?? '';
+        });
+
         $table->editColumn('act_history', function ($row) {
             return $row->act_history !=
                    \App\Models\ActiveOpportunity::ACT_HISTORY_OTHER ? (new ActiveOpportunity)->getActHistory($row->act_history) : $row->act_history_other_name;

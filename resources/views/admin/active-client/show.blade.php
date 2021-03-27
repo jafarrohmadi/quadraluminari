@@ -9,7 +9,7 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     Primary Information
@@ -44,6 +44,14 @@
                             </tr>
                             <tr>
                                 <th>
+                                    Npwp
+                                </th>
+                                <td>
+                                    {{ $activeClient->npwp }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
                                     Number Of Students
                                 </th>
                                 <td>
@@ -66,6 +74,54 @@
                                     {{ $activeClient->remark}}
                                 </td>
                             </tr>
+                            <tr>
+                                <th>
+                                    Phone Number
+                                </th>
+                                <td>
+                                    {{ $activeClient->phone_number }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Mailing Address
+                                </th>
+                                <td>
+                                    {{ $activeClient->address_mailing_address }}
+                                </td>
+                            </tr>
+                            {{--                    <tr>--}}
+                            {{--                        <th>--}}
+                            {{--                            Country--}}
+                            {{--                        </th>--}}
+                            {{--                        <td>--}}
+                            {{--                            {{ $activeClient->address_country }}--}}
+                            {{--                        </td>--}}
+                            {{--                    </tr>--}}
+                            <tr>
+                                <th>
+                                    Province
+                                </th>
+                                <td>
+                                    {{  $activeClient->addressProvinceData->name ?? '' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    City
+                                </th>
+                                <td>
+                                    {{ $activeClient->addressCityData->name  ?? ''}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Postal Code
+                                </th>
+                                <td>
+                                    {{ $activeClient->address_postal_code}}
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -73,7 +129,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        @foreach($activeClient->contactPersonData as $key => $contactPerson)
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     Contact Person
@@ -87,7 +144,7 @@
                                     Company Person Name
                                 </th>
                                 <td>
-                                    {{ $activeClient->contact_person_name }}
+                                    {{ $contactPerson->contact_person_name }}
                                 </td>
                             </tr>
                             <tr>
@@ -95,31 +152,7 @@
                                     Jabatan
                                 </th>
                                 <td>
-                                    {{ $activeClient->contact_person_grade }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Province
-                                </th>
-                                <td>
-                                    {{  $activeClient->contactPersonProvinceData->name ?? ''}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    City
-                                </th>
-                                <td>
-                                    {{ $activeClient->contactPersonCityData->name ?? ''}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Address
-                                </th>
-                                <td>
-                                    {{ $activeClient->contact_person_address}}
+                                    {{ $contactPerson->contact_person_grade }}
                                 </td>
                             </tr>
                             <tr>
@@ -127,7 +160,7 @@
                                     Phone
                                 </th>
                                 <td>
-                                    {{ $activeClient->contact_person_phone}}
+                                    {{ $contactPerson->contact_person_phone}}
                                 </td>
                             </tr>
                             <tr>
@@ -135,7 +168,7 @@
                                     Mobile Phone
                                 </th>
                                 <td>
-                                    {{ $activeClient->contact_person_mobile_phone }}
+                                    {{ $contactPerson->contact_person_mobile_phone }}
                                 </td>
                             </tr>
                             <tr>
@@ -143,7 +176,7 @@
                                     Email
                                 </th>
                                 <td>
-                                    {{ $activeClient->contact_person_mobile_email }}
+                                    {{ $contactPerson->contact_person_mobile_email }}
                                 </td>
                             </tr>
                             </tbody>
@@ -152,59 +185,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            Addresses
-        </div>
-        <div class="card-body">
-            <div class="form-group">
-                <table class="table table-bordered table-striped">
-                    <tbody>
-                    <tr>
-                        <th>
-                            Mailing Address
-                        </th>
-                        <td>
-                            {{ $activeClient->address_mailing_address }}
-                        </td>
-                    </tr>
-{{--                    <tr>--}}
-{{--                        <th>--}}
-{{--                            Country--}}
-{{--                        </th>--}}
-{{--                        <td>--}}
-{{--                            {{ $activeClient->address_country }}--}}
-{{--                        </td>--}}
-{{--                    </tr>--}}
-                    <tr>
-                        <th>
-                            Province
-                        </th>
-                        <td>
-                            {{  $activeClient->addressProvinceData->name ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            City
-                        </th>
-                        <td>
-                            {{ $activeClient->addressCityData->name  ?? ''}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Postal Code
-                        </th>
-                        <td>
-                            {{ $activeClient->address_postal_code}}
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        @endforeach
     </div>
 
     <a class="btn btn-default" href="{{ route('admin.active-client.index') }}">

@@ -94,15 +94,14 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label class="required" for="name">Product Name</label>
-                            <input class="form-control {{ $errors->has('product_name') ? 'is-invalid' : '' }}"
-                                   type="text" name="product_name"
-                                   id="product_name" value="{{ old('product_name', '') }}" required>
-                            @if($errors->has('product_name'))
-                                <div class="invalid-feedback">
-                                    {{ $errors->first('product_name') }}
+                            <label class="" for="name">Start Date</label>
+                            <div class="input-group">
+                                <input type="text" id="start_date" name="start_date"
+                                       class="form-control date">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                 </div>
-                            @endif
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -207,9 +206,12 @@
 
                         <div class="form-group">
                             <label class="" for="name">Opportunity Status</label>
-                            <input class="form-control {{ $errors->has('opportunity_status') ? 'is-invalid' : '' }}"
-                                   id="opportunity_status"
-                                   name="opportunity_status" value="{{ old('opportunity_status', '') }}">
+                            <select name="opportunity_status" id="opportunity_status"
+                                    class="form-control {{ $errors->has('opportunity_status') ? 'is-invalid' : '' }}">
+                                @for($i = 0; $i <=10; $i++)
+                                    <option value="{{ $i*10 }}">{{ $i*10 }}%</option>
+                                @endfor
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -224,6 +226,71 @@
                 </div>
             </div>
         </div>
+
+        <span class="contactPerson">
+                <div class="card ">
+                    <div class="card-header">
+                        Detail Project
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="" for="name">Produk</label>
+                            <textarea class="form-control {{ $errors->has('detail_name[0]') ? 'is-invalid' : '' }}"
+                                      id="detail_name[0]"
+                                      name="detail_name[0]" required>{{ old('detail_name[0]', '') }}</textarea>
+                            @if($errors->has('detail_name[0]'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('detail_name[0]') }}
+                                </div>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label class="" for="name">Qty</label>
+                            <input
+                                class="form-control {{ $errors->has('detail_qty[0]') ? 'is-invalid' : '' }}"
+                                type="number" name="detail_qty[0]"
+                                id="detail_qty[0]" value="{{ old('detail_qty[0]', '') }}">
+                            @if($errors->has('detail_qty[0]'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('detail_qty[0]') }}
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="form-group">
+                            <label class="" for="name">Total</label>
+                            <input
+                                class="form-control {{ $errors->has('detail_value[0]') ? 'is-invalid' : '' }}"
+                                type="number" name="detail_value[0]"
+                                id="detail_value[0]" value="{{ old('detail_value[0]', '') }}">
+                            @if($errors->has('detail_value[0]'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('detail_value[0]') }}
+                                </div>
+                            @endif
+                        </div>
+                           <div class="form-group">
+                            <label class="" for="name">Notes</label>
+                                  <textarea
+                                      class="form-control {{ $errors->has('detail_notes[0]') ? 'is-invalid' : '' }}"
+                                      id="detail_notes[0]"
+                                      name="detail_notes[0]">{{ old('detail_notes[0]', '') }}</textarea>
+                            @if($errors->has('detail_notes[0]'))
+                                   <div class="invalid-feedback">
+                                    {{ $errors->first('detail_notes[0]') }}
+                                </div>
+                               @endif
+                        </div>
+                    </div>
+                </div>
+                    </span>
+        <span class="contactPersonData"></span>
+        <div class="form-group">
+            <button class="btn btn-info" type="button" id="addContactPerson">
+                Add Detail Project
+            </button>
+        </div>
+
         <div class="card">
             <div class="card-header">
                 Reminder
@@ -372,6 +439,24 @@
                 $('.act_history_other_name_reminder').removeClass('d-none')
                 $('.act_history_other_name_reminder').addClass('d-none')
             }
+        })
+        var i = 1
+
+        $('#addContactPerson').click(function (e) {
+            var newaddress = $('span.contactPerson').eq(0).clone()
+            newaddress.find('input').val('')
+            newaddress.find('textarea').val('')
+            newaddress.find('input').each(function () {
+                this.name = this.name.replace('[0]', '[' + i + ']')
+                this.id   = this.id.replace('[0]', '[' + i + ']')
+            })
+            newaddress.find('textarea').each(function () {
+                this.name = this.name.replace('[0]', '[' + i + ']')
+                this.id   = this.id.replace('[0]', '[' + i + ']')
+            })
+            i++
+
+            $('.contactPersonData').append(newaddress)
         })
     </script>
 @endsection

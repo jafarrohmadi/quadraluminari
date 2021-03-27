@@ -49,22 +49,12 @@ class HomeController
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
         abort_if(Gate::denies('dashboard'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('home');
-    }
-
-    /**
-     * @param Request $request
-     * @return mixed
-     * @throws \Exception
-     */
-    public function dataTable(Request $request)
-    {
-        $where           = [];
-        $where['status'] = ActiveOpportunity::STATUS_ON_PROGRESS;
+        $where                                = [];
+        $where['active_opportunities.status'] = ActiveOpportunity::STATUS_ON_PROGRESS;
 
         if ($request->date_start != null) {
             $where[] = ['act_history_date', '>=', $request->date_start];
@@ -94,118 +84,14 @@ class HomeController
                 ]);
         }
 
-        $table = Datatables::of($query);
-        $table->addColumn('placeholder', ' ');
-        $table->addColumn('actions', '&nbsp;');
+        $query = $query->get();
 
-        $table->editColumn('active_client_id', function ($row) {
-            return $row->activeClientData->name ?? '';
-        });
-
-        $table->editColumn('mailing_address', function ($row) {
-            return $row->activeClientData->address_mailing_address ?? '';
-        });
-
-        $table->editColumn('city_id', function ($row) {
-            return $row->activeClientData->addressCityData->name ?? '';
-        });
-
-        $table->editColumn('postal_code', function ($row) {
-            return $row->activeClientData->address_postal_code ?? '';
-        });
-
-        $table->editColumn('contact_person_name', function ($row) {
-            return $row->activeClientData->contact_person_name ?? '';
-        });
-
-        $table->editColumn('contact_person_grade', function ($row) {
-            return $row->activeClientData->contact_person_name ?? '';
-        });
-
-        $table->editColumn('phone', function ($row) {
-            return $row->activeClientData->contact_person_phone ?? '';
-        });
-
-        $table->editColumn('mobile_phone', function ($row) {
-            return $row->activeClientData->contact_person_mobile_phone ?? '';
-        });
-
-        $table->editColumn('email', function ($row) {
-            return $row->activeClientData->contact_person_mobile_email ?? '';
-        });
-
-        $table->editColumn('user_id', function ($row) {
-            return $row->userData->name ?? '';
-        });
-
-        $table->editColumn('act_history', function ($row) {
-            return $row->act_history !=
-                   \App\Models\ActiveOpportunity::ACT_HISTORY_OTHER ? (new ActiveOpportunity)->getActHistory($row->act_history) : $row->act_history_other_name;
-        });
-
-        $table->editColumn('value', function ($row) {
-            return (new ActiveOpportunity)->getCurrency($row->value_currency) . ' ' .
-                   number_format($row->value, 2, ',', '.');
-        });
-
-        $table->editColumn('reminder', function ($row) {
-            return $row->reminder == 1 ? 'Ya' : 'Tidak';
-        });
-
-        $table->editColumn('act_history_reminder', function ($row) {
-            return $row->activeOpportunityHistoryReminderData->last()->act_history_reminder !=
-                   \App\Models\ActiveOpportunity::ACT_HISTORY_OTHER ? (new ActiveOpportunity)->getActHistory($row->activeOpportunityHistoryReminderData->last()->act_history_reminder) : $row->activeOpportunityHistoryReminderData->last()->act_history_other_name_reminder;
-        });
-
-        $table->editColumn('act_history_date_reminder', function ($row) {
-            return $row->activeOpportunityHistoryReminderData->last()->act_history_date_reminder ?? '';
-        });
-        $table->editColumn('act_history_order_reminder', function ($row) {
-            return $row->activeOpportunityHistoryReminderData->last()->act_history_order_reminder ?? '';
-        });
-
-        $table->editColumn('act_history_notes_reminder', function ($row) {
-            return $row->activeOpportunityHistoryReminderData->last()->act_history_notes_reminder ?? '';
-        });
-
-
-        $table->editColumn('actions', function ($row) {
-            $viewGate      = 'active_opportunity_view';
-            $editGate      = 'active_opportunity_edit';
-            $deleteGate    = 'active_opportunity_delete';
-            $crudRoutePart = 'active-opportunity';
-            return view('partials.datatablesActions', compact(
-                    'viewGate',
-                    'editGate',
-                    'deleteGate',
-                    'crudRoutePart',
-                    'row'
-                )
-            );
+        if ($request->ajax()) {
+            return view('datatable-home', compact('query'));
         }
-        );
 
-        return $table->make(true);
-
+        return view('home', compact('query'));
     }
 
-//    public function reminder()
-//    {
-//        $user = $this->user->findAllData([['id', '!=', 1]]);
-//
-//        foreach ($user as $users) {
-//            $data = $this->activeOpportunityReminderRepository->findAllData([
-//                'user_id'                   => $users->id,
-//                'act_history_date_reminder' => date('Y-m-d'),
-//            ], ['activeOpportunityData', 'activeOpportunityData.activeClientData']);
-//
-//            $email = explode(';', $users->email);
-//
-//            foreach ($email as $emails) {
-//                Mail::to($emails)->send(new ReminderEmail($data, $users->name));
-//            }
-//
-//        }
-//    }
 }
 
